@@ -6,3 +6,6 @@ body, html {
   height: 100%;
 }
 
+.search-results ui {
+  list-style-type: none;
+}

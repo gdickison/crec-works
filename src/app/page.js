@@ -1,84 +1,38 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
+import { useState } from "react";
+import SearchBar from "@/components/SearchBar";
+import CallToAction from "@/components/CallToAction";
 
 export default function Home() {
+  const [results, setResults] = useState([])
+
   return (
-    <div class="relative pt-48 pb-12 bg-black xl:pt-60 sm:pb-16 lg:pb-32 xl:pb-48 2xl:pb-56">
-      <div class="absolute inset-0">
-        <img class="object-cover w-full h-full opacity-[65%]" src="/images/farm_work.jpg" alt="" />
+    <div className="relative pt-24 pb-12 bg-black xl:pt-48 sm:pb-16 lg:pb-32 xl:pb-48 2xl:pb-56">
+      <div className="absolute inset-0">
+        <img className="object-cover w-full h-full opacity-[65%]" src="/images/farm_work.jpg" alt="" />
       </div>
-
-      <div class="relative">
-        <div class="px-6 mx-auto sm:px-8 lg:px-12 max-w-7xl">
-          <div class="w-full lg:w-2/3">
-            <h1 class="font-sans text-base font-normal tracking-tight text-white text-opacity-70">The business directory for members of the Communion of Reformed Evangelical Churches</h1>
-            <p class="mt-6 tracking-tighter text-white">
-              <span class="font-sans font-normal text-7xl">CREC</span><br />
-              <span class="font-serif italic font-normal text-8xl">Works</span>
-            </p>
-            <p class="mt-12 font-sans text-xl font-normal leading-7 text-white text-opacity-70">Search for a business</p>
-            <p class="mt-8 font-sans text-xl font-normal text-white">List from $0 to $5.00/month. Search for free.</p>
-
-            <div class="flex items-center mt-5 space-x-3 sm:space-x-4">
-              <a
-                href="#"
-                title=""
-                class="
-                  inline-flex
-                  items-center
-                  justify-center
-                  px-5
-                  py-2
-                  font-sans
-                  text-base
-                  font-semibold
-                  transition-all
-                  duration-200
-                  border-2 border-transparent
-                  rounded-full
-                  sm:leading-8
-                  bg-white
-                  sm:text-lg
-                  text-black
-                  hover:bg-opacity-90
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary focus:ring-offset-secondary
-                "
-                role="button"
-              >
-                List Your Business
-              </a>
-
-              <a
-                href="#"
-                title=""
-                class="
-                  inline-flex
-                  items-center
-                  justify-center
-                  px-5
-                  py-2
-                  font-sans
-                  text-base
-                  font-semibold
-                  transition-all
-                  duration-200
-                  bg-transparent
-                  border-2
-                  rounded-full
-                  sm:leading-8
-                  text-white
-                  border-primary
-                  hover:bg-white
-                  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-                  hover:text-black
-                  sm:text-lg
-                  focus:ring-offset-secondary
-                "
-                role="button"
-              >
-                Sign In / Sign Up
-              </a>
+      <div className="relative space-y-4 md:space-y-8 lg:space-y-14">
+        <div className="w-full h-full p-0.5 border-red-500 flex flex-col lg:flex-row items-center">
+          <div className="lg:w-1/2 h-full m-2 p-0.5 border-green-500 flex justify-center">
+            <div className="px-6 sm:px-8 lg:px-12 max-w-7xl">
+              <div className="w-full lg:w-2/3">
+                <h1 className="font-sans text-base font-normal tracking-tight text-white text-opacity-70">The business directory for members of the Communion of Reformed Evangelical Churches</h1>
+                <p className="mt-2 md:mt-4 lg:mt-6 tracking-tighter text-white">
+                  <span className="font-sans font-normal text-5xl xs:text-7xl xl:text-8xl">CREC</span>
+                  <span className="font-serif italic font-normal text-6xl xs:text-8xl xl:text-9xl">Works</span>
+                </p>
+              </div>
             </div>
           </div>
+          <div className="lg:w-1/2 h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
+              <CallToAction/>
+          </div>
+        </div>
+        <div className="p-0.5 border-blue-500 py-4">
+          <SearchBar
+            setResults={setResults}
+          />
         </div>
       </div>
     </div>
