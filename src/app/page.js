@@ -12,7 +12,7 @@ export default function Home() {
       <div className="absolute inset-0">
         <img className="object-cover w-full h-full opacity-[65%]" src="/images/farm_work.jpg" alt="" />
       </div>
-      <div className="relative space-y-4 md:space-y-8 lg:space-y-14">
+      <div className="relative space-y-4 md:space-y-8 lg:space-y-14 max-w-screen-2xl mx-auto">
         <div className="w-full h-full p-0.5 border-red-500 flex flex-col lg:flex-row items-center">
           <div className="lg:w-1/2 h-full m-2 p-0.5 border-green-500 flex justify-center">
             <div className="px-6 sm:px-8 lg:px-12 max-w-7xl">
