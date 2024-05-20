@@ -28,21 +28,21 @@ const listings = [
   },
   {
     id: 2,
-    title: 'Soli Deo Financial Services',
+    title: 'Semper Fide Carpentry',
     href: '#',
     description:
-      'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel iusto corrupti dicta laboris incididunt.',
+      'We do custom construction and remodels in the Florida panhandle. Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel iusto corrupti dicta laboris incididunt.',
     imageUrl:
-      'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80',
+      '/images/carpenter_tools.jpg',
     date: 'Mar 16, 2020',
     datetime: '2020-03-16',
     categories: [
-      { title: 'Marketing', href: '#' },
-      { title: 'Accounting', href: '#' },
-      { title: 'Finance', href: '#' },
+      { title: 'Carpentry', href: '#' },
+      { title: 'Building', href: '#' },
+      { title: 'Construction', href: '#' },
     ],
     author: {
-      name: 'Michael Foster',
+      name: 'John Phelps',
       role: 'Co-Founder / CTO',
       href: '#',
       imageUrl:
@@ -54,18 +54,18 @@ const listings = [
   },
   {
     id: 3,
-    title: 'Soli Deo Financial Services',
+    title: 'Stewardship Investments',
     href: '#',
     description:
-      'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel iusto corrupti dicta laboris incididunt.',
+      'We provide investment services in all 50 states. Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel iusto corrupti dicta laboris incididunt.',
     imageUrl:
-      'https://images.unsplash.com/photo-1496128858413-b36217c2ce36?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=3603&q=80',
+      '/images/money_plant.jpg',
     date: 'Mar 16, 2020',
     datetime: '2020-03-16',
     categories: [
-      { title: 'Marketing', href: '#' },
-      { title: 'Accounting', href: '#' },
-      { title: 'Finance', href: '#' },
+      { title: 'Investment', href: '#' },
+      { title: 'Retirement', href: '#' },
+      { title: 'Wealth Management', href: '#' },
     ],
     author: {
       name: 'Michael Foster',
@@ -86,9 +86,9 @@ export default function Listing() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:max-w-4xl">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Search Results</h2>
-          <p className="mt-2 text-lg leading-8 text-gray-600">
+          {/* <p className="mt-2 text-lg leading-8 text-gray-600">
             Learn how to grow your business with our expert advice.
-          </p>
+          </p> */}
           <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20">
             {listings.map((listing) => (
               <article key={listing.id} className="relative isolate flex flex-col gap-8 lg:flex-row">
