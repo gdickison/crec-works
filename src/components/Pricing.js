@@ -15,6 +15,7 @@ const tiers = [
     description: 'Advertise to your local congregation.',
     features: ['Your local church', 'Full business listing', 'Full keyword search'],
     mostPopular: false,
+    action: 'Get'
   },
   {
     name: 'Regional',
@@ -30,6 +31,7 @@ const tiers = [
       'Search analytics'
     ],
     mostPopular: true,
+    action: 'Buy'
   },
   {
     name: 'National',
@@ -45,6 +47,7 @@ const tiers = [
       'Search analytics'
     ],
     mostPopular: false,
+    action: 'Buy'
   },
 ]
 
@@ -130,7 +133,7 @@ export default function Pricing() {
                   'mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                 )}
               >
-                Buy plan
+                {tier.action} plan
               </a>
               <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                 {tier.features.map((feature) => (

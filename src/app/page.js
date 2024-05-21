@@ -32,6 +32,9 @@ export default function Home() {
               <CallToAction/>
             </div>
           </div>
+          <div className="">
+            <p className="text-white px-12 md:px-24">Discover trusted businesses within the CREC. Whether you are looking for a local service or want to connect with professionals across the nation, our directory is here to help you find what you need. Members can log in to access the full directory and manage their business listings. Start exploring today!</p>
+          </div>
           <div className="p-0.5 border-blue-500 py-4">
             <SearchBar
               setResults={setResults}

@@ -32,7 +32,7 @@ function CallToAction() {
         </a>
 
         <a
-          href="#"
+          href="/sign-up"
           title=""
           className="
             inline-flex
