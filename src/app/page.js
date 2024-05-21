@@ -3,6 +3,7 @@
 import { useState } from "react";
 import SearchBar from "@/components/SearchBar";
 import CallToAction from "@/components/CallToAction";
+import Categories from "@/components/Categories";
 import Pricing from "@/components/Pricing";
 
 export default function Home() {
@@ -38,6 +39,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Categories/>
       <Pricing/>
     </div>
   );
