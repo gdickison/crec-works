@@ -29,7 +29,7 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:w-1/2 h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
-                <CallToAction/>
+              <CallToAction/>
             </div>
           </div>
           <div className="p-0.5 border-blue-500 py-4">

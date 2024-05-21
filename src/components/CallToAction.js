@@ -28,7 +28,7 @@ function CallToAction() {
           "
           role="button"
         >
-          List Your Business
+          Sign In / Sign Up
         </a>
 
         <a
@@ -59,7 +59,7 @@ function CallToAction() {
           "
           role="button"
         >
-          Sign In / Sign Up
+          List Your Business
         </a>
       </div>
     </div>
