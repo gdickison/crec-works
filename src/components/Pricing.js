@@ -59,7 +59,7 @@ export default function Pricing() {
   const [frequency, setFrequency] = useState(frequencies[0])
 
   return (
-    <div className="bg-white py-24 sm:py-32">
+    <div className="bg-white py-12">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-base font-semibold leading-7 text-indigo-600">Pricing</h2>
@@ -146,6 +146,24 @@ export default function Pricing() {
             </div>
           ))}
         </div>
+        <section id="relume" className="px-[5%] py-12">
+          <div className="container text-center">
+            <h2 className="rb-5 mb-5 text-5xl font-semibold md:mb-6">
+              For Churches
+            </h2>
+            <p className="md:text-xl">
+              Get a branded directory for your congregation.
+            </p>
+            <div className="mt-6 flex items-center justify-center gap-4 md:mt-8">
+              <button
+                className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary text-text-primary bg-background-primary px-6 py-3 bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 rounded-lg w-96"
+                title="Button"
+              >
+                Get Started
+              </button>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
   )

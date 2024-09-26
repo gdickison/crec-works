@@ -45,7 +45,7 @@ function SignUp() {
               </div>
               
               <div>
-                <label htmlhtmlFor="church" className="sr-only">
+                <label htmlFor="church" className="sr-only">
                   Church
                 </label>
                 <select

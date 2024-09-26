@@ -75,9 +75,9 @@ export default function Categories () {
             <div className="p-6 lg:px-10 lg:py-8">
               <div className="flex items-center justify-start space-x-8">
                 <svg className="flex-shrink-0 w-10 h-10 text-gray-600 md:w-12 md:h-12" viewBox="0 0 60 60" fill="none" stroke="currentColor" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M30 18L24 11L26 8H34L36 11L30 18Z" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M30 52C39.3888 52 47 44.3888 47 35C47 25.6112 39.3888 18 30 18C20.6112 18 13 25.6112 13 35C13 44.3888 20.6112 52 30 52Z" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
-                  <path d="M30 47C36.6274 47 42 41.6274 42 35C42 28.3726 36.6274 23 30 23C23.3726 23 18 28.3726 18 35C18 41.6274 23.3726 47 30 47Z" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M30 18L24 11L26 8H34L36 11L30 18Z" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M30 52C39.3888 52 47 44.3888 47 35C47 25.6112 39.3888 18 30 18C20.6112 18 13 25.6112 13 35C13 44.3888 20.6112 52 30 52Z" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M30 47C36.6274 47 42 41.6274 42 35C42 28.3726 36.6274 23 30 23C23.3726 23 18 28.3726 18 35C18 41.6274 23.3726 47 30 47Z" strokeWidth="2" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
