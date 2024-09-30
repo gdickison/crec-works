@@ -36,7 +36,7 @@ function SearchBar({ setResults }) {
             type="text"
             className="p-2 w-full border-0 text-base font-normal focus:outline-none"
             id="search_text"
-            placeholder={pathname === '/' ? "Search public listings" : "Search by name or keyword"}
+            placeholder={"Search listings"}
             value={input}
             onChange={e => handleChange(e.target.value)}
           />

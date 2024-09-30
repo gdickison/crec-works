@@ -1,13 +1,36 @@
 'use client'
 /* eslint-disable @next/next/no-img-element */
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { account } from "./appwrite";
+import { useRouter } from "next/navigation";
 import SearchBar from "@/components/SearchBar";
 import CallToAction from "@/components/CallToAction";
 import Categories from "@/components/Categories";
 import Pricing from "@/components/Pricing";
+import UserActions from "@/components/UserActions";
 
 export default function Home() {
+  const [user, setUser] = useState(null);
   const [results, setResults] = useState([])
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const currentUser = await account.get();
+        setUser(currentUser);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+        // If there's no valid session, redirect to login
+        router.push('/');
+      }
+    };
+
+    fetchUser();
+  }, [router]);
+
+  console.log('user', user)
+
 
   return (
     <div>
@@ -29,20 +52,26 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:w-1/2 h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
-              <CallToAction/>
+              {user ? <UserActions account={account}/> : <CallToAction/>}
             </div>
           </div>
           <div className="">
             <p className="text-white px-12 md:px-24">Discover trusted businesses within the CREC. Whether you are looking for a local service or want to connect with professionals across the nation, our directory is here to help you find what you need. Members can log in to access the full directory and manage their business listings. Start exploring today!</p>
           </div>
-          <div className="p-0.5 border-blue-500 py-4">
-            <SearchBar
-              setResults={setResults}
-            />
-          </div>
+          {user &&
+            <div className="p-0.5 border-blue-500 py-4">
+              <SearchBar
+                setResults={setResults}
+              />
+            </div>
+          }
         </div>
       </div>
-      <Categories/>
+      {user &&
+        <div>
+          <Categories/>
+        </div>
+      }
       <Pricing/>
     </div>
   );
