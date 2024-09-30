@@ -1,10 +1,12 @@
+import Link from "next/link";
+
 function CallToAction() {
   return (
     <div className='flex flex-col mx-auto gap-4'>
       <p className="font-sans text-xl font-normal text-white flex flex-col sm:flex-row sm:gap-2 items-center"><span>List from $0 to $5.00/month. </span><span>Search for free.</span></p>
       <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
-        <a
-          href="#"
+        <Link
+          href="/login"
           title=""
           className="
             inline-flex
@@ -29,10 +31,10 @@ function CallToAction() {
           role="button"
         >
           List Your Business
-        </a>
+        </Link>
 
-        <a
-          href="/sign-up"
+        <Link
+          href="/login"
           title=""
           className="
             inline-flex
@@ -60,7 +62,7 @@ function CallToAction() {
           role="button"
         >
           Sign In / Sign Up
-        </a>
+        </Link>
       </div>
     </div>
   )
