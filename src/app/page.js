@@ -34,7 +34,7 @@ export default function Home() {
     const session = await account.deleteSession("current");
     setUser(null);
   };
-
+console.log(user);
   return (
     <div>
       <div className="relative pt-24 pb-12 bg-black xl:pt-48 sm:pb-16 lg:pb-32 xl:pb-48 2xl:pb-56">

@@ -2,7 +2,13 @@ import React from 'react'
 
 function Welcome() {
   return (
-    <div>Welcome</div>
+    <form>
+      <label>
+        Last Name
+        <input type="text" name="name" />
+      </label>
+      <button type="submit">Submit</button>
+    </form>
   )
 }
 

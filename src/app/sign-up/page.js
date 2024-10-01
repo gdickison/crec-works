@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useState } from "react";
-import { account, ID } from "../appwrite";
+import { Account, ID, Databases, Client } from "appwrite";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
@@ -14,9 +14,30 @@ const SignUpPage = () => {
   const [lastName, setLastName] = useState("");
   const [church, setChurch] = useState("");
 
+  const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_URL)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
+
+  const account = new Account(client)
+
+  const databases = new Databases(client)
+
   const login = async (email, password) => {
     const session = await account.createEmailPasswordSession(email, password);
     setLoggedInUser(await account.get());
+    console.log('session', session);
+    await databases.createDocument(
+      process.env.NEXT_PUBLIC_APPWRITE_DATABASE_ID,
+      process.env.NEXT_PUBLIC_APPWRITE_USERS_COLLECTION_ID,
+      ID.unique(),
+      {
+        user_id: session.userId,
+        first_name: firstName,
+        last_name: lastName,
+        church: church
+      }
+    );
+  
     router.push('/');
   };
 
@@ -110,7 +131,6 @@ const SignUpPage = () => {
                     id="church"
                     name="church"
                     className="block w-full px-6 py-4 text-base text-center text-gray-900 placeholder-gray-600 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
-                    defaultValue="Select Your Church"
                     required
                     value={church}
                     onChange={(e) => setChurch(e.target.value)}
