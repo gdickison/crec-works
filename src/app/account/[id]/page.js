@@ -1,4 +1,4 @@
-import { account } from "@/app/appwrite";
+
 
 export default async function Account() {
 

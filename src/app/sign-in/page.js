@@ -1,21 +1,28 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import { useState } from "react";
-import { account } from "../appwrite";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { createAdminClient } from "@/app/appwrite/config";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
 const SignInPage = () => {
-  const router = useRouter();
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const login = async (email, password) => {
+  async function createSession(formData) {
+    'use server'
+    const data = Object.fromEntries(formData);
+    const {email, password} = data;
+    const {account} = await createAdminClient();
     const session = await account.createEmailPasswordSession(email, password);
-    setLoggedInUser(await account.get());
-    router.push('/');
-  };
+
+    cookies().set("session", session.secret, {
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      expires: new Date(session.expire),
+      path: "/"
+    } );
+
+    redirect('/');
+  }
 
   return (
     <div>
@@ -31,7 +38,7 @@ const SignInPage = () => {
                 <h1 className="mb-5 text-5xl md:mb-6 md:text-5xl lg:text-6xl">Sign In</h1>
                 <p className="md:text-md">Sign in to your account to access the full directory.</p>
               </div>
-              <form className="grid grid-cols-1 gap-6">
+              <form action={createSession} className="grid grid-cols-1 gap-6">
                 <div className="grid w-full items-center">
                   <label
                     className="sr-only"
@@ -46,8 +53,7 @@ const SignInPage = () => {
                       id="email"
                       placeholder="Email Address"
                       required
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      name="email"
                     />
                   </div>
                 </div>
@@ -65,16 +71,14 @@ const SignInPage = () => {
                       id="password"
                       placeholder="Password"
                       required
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      name="password"
                     />
                   </div>
                 </div>
                 <div className="grid-col-1 grid gap-4">
                   <button
-                    type="button"
-                    className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary bg-background-alternative text-text-alternative px-6 py-3 hover:bg-gray-900 hover:text-gray-100"
-                    onClick={() => login(email, password)}
+                    type="submit"
+                    className="border-gray-200 rounded-xl focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary bg-background-alternative text-text-alternative px-6 py-4 bg-gray-900 text-gray-100 hover:bg-gray-300 hover:text-gray-900"
                   >
                     Sign in
                   </button>
