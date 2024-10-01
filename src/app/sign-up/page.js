@@ -32,16 +32,6 @@ const SignUpPage = () => {
           className="relative grid h-screen grid-cols-1 items-stretch justify-center overflow-auto lg:grid-cols-2"
         >
           <div
-            className="absolute bottom-auto left-0 right-0 top-0 z-10 flex h-16 w-full items-center justify-center px-[5%] md:h-18 lg:justify-between"
-          >
-            <Link href="/">
-              <p className="mt-2 md:mt-4 lg:mt-6 tracking-tighter text-black">
-                <span className="font-sans font-normal text-2xl xs:text-4xl xl:text-5xl">CREC</span>
-              <span className="font-serif italic font-normal text-3xl xs:text-5xl xl:text-6xl">Works</span>
-            </p>
-            </Link>
-          </div>
-          <div
             className="relative mx-[5vw] flex items-center justify-center pb-16 pt-20 md:pb-20 md:pt-24 lg:py-20"
           >
             <div className="container max-w-sm">
@@ -149,7 +139,7 @@ const SignUpPage = () => {
                 className="mt-5 inline-flex w-full items-center justify-center gap-x-1 text-center md:mt-6"
               >
                 <p>Already have an account?</p>
-                <a href="/sign-in" className="underline">Log in</a>
+                <Link href="/sign-in" className="underline">Log in</Link>
               </div>
             </div>
           </div>

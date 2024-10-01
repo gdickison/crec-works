@@ -32,67 +32,6 @@ function CallToAction() {
         >
           List Your Business
         </Link>
-
-        <Link
-          href="/sign-up"
-          title=""
-          className="
-            inline-flex
-            items-center
-            justify-center
-            px-5
-            py-2
-            font-sans
-            text-base
-            font-semibold
-            transition-all
-            duration-200
-            bg-transparent
-            border-2
-            rounded-full
-            sm:leading-8
-            text-white
-            border-primary
-            hover:bg-white
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-            hover:text-black
-            sm:text-lg
-            focus:ring-offset-secondary
-          "
-          role="button"
-        >
-          Sign Up
-        </Link>
-        <Link
-          href="/sign-in"
-          title=""
-          className="
-            inline-flex
-            items-center
-            justify-center
-            px-5
-            py-2
-            font-sans
-            text-base
-            font-semibold
-            transition-all
-            duration-200
-            bg-transparent
-            border-2
-            rounded-full
-            sm:leading-8
-            text-white
-            border-primary
-            hover:bg-white
-            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary
-            hover:text-black
-            sm:text-lg
-            focus:ring-offset-secondary
-          "
-          role="button"
-        >
-          Sign In
-        </Link>
       </div>
     </div>
   )

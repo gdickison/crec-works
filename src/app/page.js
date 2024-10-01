@@ -29,9 +29,6 @@ export default function Home() {
     fetchUser();
   }, [router]);
 
-  console.log('user', user)
-
-
   return (
     <div>
       <div className="relative pt-24 pb-12 bg-black xl:pt-48 sm:pb-16 lg:pb-32 xl:pb-48 2xl:pb-56">
@@ -52,7 +49,7 @@ export default function Home() {
               </div>
             </div>
             <div className="lg:w-1/2 h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
-              {user ? <UserActions account={account}/> : <CallToAction/>}
+              {user ? <UserActions user={user} account={account} /> : <CallToAction/>}
             </div>
           </div>
           <div className="">
