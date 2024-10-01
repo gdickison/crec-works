@@ -8,6 +8,7 @@ import CallToAction from "@/components/CallToAction";
 import Categories from "@/components/Categories";
 import Pricing from "@/components/Pricing";
 import UserActions from "@/components/UserActions";
+import Header from "@/components/Header";
 
 export default function Home() {
   const [user, setUser] = useState(null);
@@ -29,9 +30,15 @@ export default function Home() {
     fetchUser();
   }, [router]);
 
+  const logout = async () => {
+    const session = await account.deleteSession("current");
+    setUser(null);
+  };
+
   return (
     <div>
       <div className="relative pt-24 pb-12 bg-black xl:pt-48 sm:pb-16 lg:pb-32 xl:pb-48 2xl:pb-56">
+        <Header user={user} logout={logout} />
         <div className="absolute inset-0">
           <img className="object-cover w-full h-full opacity-[65%]" src="/images/farm_work.jpg" alt="" />
         </div>

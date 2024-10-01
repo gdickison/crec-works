@@ -1,24 +1,7 @@
-"use client";
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { account } from "../app/appwrite";
-import { useState, useEffect } from "react";
 
-const Header = () => {
-  const [loggedInUser, setLoggedInUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const user = await account.get();
-      setLoggedInUser(user);
-    };
-    fetchUser();
-  }, []);
-
-  const logout = async () => {
-    const session = await account.deleteSession("current");
-    setLoggedInUser(null);
-  };
+const Header = ({user, logout}) => {
 
   return <div className="absolute top-0 left-0 w-full z-10 bg-gray-600/50">
     <nav
@@ -45,10 +28,10 @@ const Header = () => {
           style={{height: "var(--height-closed, 0)"}}
         >
           <div className="first:pt-4 lg:first:pt-0">
-            <a href={`/account/${loggedInUser?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {loggedInUser?.name}</a>
+            <a href={`/account/${user?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.name}</a>
           </div>
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
-            {loggedInUser ? (
+            {user ? (
               <button
                 type="button"
                 title=""
