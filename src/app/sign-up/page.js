@@ -121,9 +121,9 @@ const SignUpPage = () => {
                     <option>Providence Church - Pensacola, FL</option>
                   </select>
                 </div>
-                <div class="flex items-center justify-center">
-                  <input id="accept-terms" name="accept-terms" type="checkbox" class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                  <label htmlFor="accept-terms" class="ml-3 block text-sm leading-6 text-gray-900">I accept the <a href="#" className="underline text-blue-600 hover:text-blue-700">terms and conditions</a></label>
+                <div className="flex items-center justify-center">
+                  <input id="accept-terms" name="accept-terms" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
+                  <label htmlFor="accept-terms" className="ml-3 block text-sm leading-6 text-gray-900">I accept the <a href="#" className="underline text-blue-600 hover:text-blue-700">terms and conditions</a></label>
                 </div>
                 <div className="grid-col-1 grid gap-4">
                   <button

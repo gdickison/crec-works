@@ -22,11 +22,11 @@ const Header = () => {
 
   return <div className="absolute top-0 left-0 w-full z-10 bg-gray-600/50">
     <nav
-      class="flex w-full items-center border-b border-border-primary bg-background-primary lg:min-h-18 lg:px-[5%] py-2"
+      className="flex w-full items-center border-b border-border-primary bg-background-primary lg:min-h-18 lg:px-[5%] py-2"
     >
-      <div class="size-full lg:flex lg:items-center lg:justify-between">
+      <div className="size-full lg:flex lg:items-center lg:justify-between">
         <div
-          class="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0"
+          className="flex min-h-16 items-center justify-between px-[5%] md:min-h-18 lg:min-h-full lg:px-0"
         >
           <Link href="/">
             <p className="tracking-tighter text-black">
@@ -34,20 +34,20 @@ const Header = () => {
               <span className="font-serif italic font-normal text-xl xs:text-3xl xl:text-4xl">Works</span>
             </p>
           </Link>
-          <button class="-mr-2 flex size-12 flex-col items-center justify-center lg:hidden">
-            <span class="my-[3px] h-0.5 w-6 bg-black" style={{willChange: "transform"}}></span>
-            <span class="my-[3px] h-0.5 w-6 bg-black"></span>
-            <span class="my-[3px] h-0.5 w-6 bg-black" style={{willChange: "transform"}}></span>
+          <button className="-mr-2 flex size-12 flex-col items-center justify-center lg:hidden">
+            <span className="my-[3px] h-0.5 w-6 bg-black" style={{willChange: "transform"}}></span>
+            <span className="my-[3px] h-0.5 w-6 bg-black"></span>
+            <span className="my-[3px] h-0.5 w-6 bg-black" style={{willChange: "transform"}}></span>
           </button>
         </div>
         <div
-          class="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
+          className="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
           style={{height: "var(--height-closed, 0)"}}
         >
-          <div class="first:pt-4 lg:first:pt-0">
-            <a href={`/account/${loggedInUser?.$id}`} class="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {loggedInUser?.name}</a>
+          <div className="first:pt-4 lg:first:pt-0">
+            <a href={`/account/${loggedInUser?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {loggedInUser?.name}</a>
           </div>
-          <div class="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
+          <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
             {loggedInUser ? (
               <button
                 type="button"
