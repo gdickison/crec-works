@@ -39,8 +39,6 @@ async function Welcome() {
                     placeholder="Last Name"
                     className="block w-1/2 px-6 py-4 text-base text-center text-gray-900 placeholder-gray-600 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
                     required
-                    value={lastName}
-                    onChange={(e) => setLastName(e.target.value)}
                   />
                 </div>
                 <div>
@@ -52,8 +50,6 @@ async function Welcome() {
                     name="church"
                     className="block w-full px-6 py-4 text-base text-center text-gray-900 placeholder-gray-600 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
                     required
-                    value={church}
-                    onChange={(e) => setChurch(e.target.value)}
                   >
                     <option>Select Your Church</option>
                     <option>Christ Church - Moscow, ID</option>
