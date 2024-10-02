@@ -1,10 +1,10 @@
-import { Client, Databases, Account } from "node-appwrite";
+import { Client, Databases, Account, ID } from "node-appwrite";
 
 const createAdminClient = async () => {
   const client = new Client()
-  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
-  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
-  .setKey(process.env.NEXT_PUBLIC_APPWRITE_API_KEY);
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
+    .setKey(process.env.NEXT_PUBLIC_APPWRITE_API_KEY);
 
   return {
     get account() {
@@ -18,8 +18,8 @@ const createAdminClient = async () => {
 
 const createSessionClient = async (session) => {
   const client = new Client()
-  .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
-  .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
 
   if(session) {
     client.setSession(session);
@@ -35,4 +35,21 @@ const createSessionClient = async (session) => {
   };
 }
 
-export { createAdminClient, createSessionClient };
+const createNewUserSession = async (email, password, name) => {
+  const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
+
+  const account = new Account(client);
+
+  try {
+    const newUser = await account.create(ID.unique(), email, password, name);
+
+    return newUser;
+  } catch (error) {
+    console.error("Error creating new user or session:", error);
+    throw error;
+  }
+}
+
+export { createAdminClient, createSessionClient, createNewUserSession };
