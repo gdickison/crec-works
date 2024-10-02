@@ -1,55 +1,62 @@
-import { Client, Databases, Account, ID } from "node-appwrite";
+import { Client, Account, Users } from "node-appwrite";
+import { cookies } from "next/headers";
 
-const createAdminClient = async () => {
+export async function createSessionClient () {
+  const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
+
+  const session = cookies().get('session');
+
+  if (!session || !session.value) {
+    throw new Error('No session found');
+  }
+
+  client.setSession(session.value);
+
+  return {
+    get account() {
+      return new Account(client);
+    }
+  };
+}
+
+export async function createAdminClient () {
   const client = new Client()
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
-    .setKey(process.env.NEXT_PUBLIC_APPWRITE_API_KEY);
+    .setKey(process.env.NEXT_APPWRITE_API_KEY);
 
   return {
     get account() {
       return new Account(client);
-    },
-    get databases() {
-      return new Databases(client);
     }
   };
 }
 
-const createSessionClient = async (session) => {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
-
-  if(session) {
-    client.setSession(session);
-  }
-
-  return {
-    get account() {
-      return new Account(client);
-    },
-    get databases() {
-      return new Databases(client);
-    }
-  };
-}
-
-const createNewUserSession = async (email, password, name) => {
-  const client = new Client()
-    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
-    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
-
-  const account = new Account(client);
-
+export async function getLoggedInUser() {
   try {
-    const newUser = await account.create(ID.unique(), email, password, name);
-
-    return newUser;
+    const { account } = await createSessionClient();
+    return await account.get();
   } catch (error) {
-    console.error("Error creating new user or session:", error);
-    throw error;
+    return null;
   }
 }
 
-export { createAdminClient, createSessionClient, createNewUserSession };
+export async function setUserChurch(userId, church) {
+  const client = new Client()
+    .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
+    .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID)
+    .setKey(process.env.NEXT_APPWRITE_API_KEY);
+
+  const users = new Users(client);
+
+  const result = await users.updatePrefs(
+    userId,
+    {
+      church: church
+    }
+  );
+
+  return result;
+}

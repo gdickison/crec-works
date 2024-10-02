@@ -1,31 +1,33 @@
 /* eslint-disable @next/next/no-img-element */
-import Link from "next/link";
-import { createNewUserSession } from "@/app/appwrite/config";
+import { ID } from "node-appwrite";
+import { createAdminClient } from "@/app/appwrite/config";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
-const SignUpPage = () => {
+export default async function SignUpPage () {
 
   async function registerNewUser(formData) {
     'use server'
-    try {
-      const data = Object.fromEntries(formData);
-      const {email, password, name} = data;
-      const session = await createNewUserSession(email, password, name);
+    const data = Object.fromEntries(formData);
+    const {email, password, name} = data;
+    const { account } = await createAdminClient();
 
-      cookies().set("session", session.secret, {
-        httpOnly: true,
-        sameSite: "strict",
-        secure: true,
-        expires: new Date(session.expire),
-        path: "/welcome"
-      } );
+    await account.create(ID.unique(), email, password, name);
+    const session = await account.createEmailPasswordSession(email, password);
+    console.log('session', session);
+    cookies().set("session", session.secret, {
+      path: "/",
+      httpOnly: true,
+      sameSite: "strict",
+      secure: true,
+      expires: new Date(session.expire)
+    });
 
-      redirect('/welcome');
-
-    } catch (error) {
-      console.error("Sign up failed:", error);
-      alert("Sign up failed. Please try again.");
+    if (session) {
+      redirect("/welcome");
+    } else {
+      console.error("Account creation failed:", error);
     }
   };
 
@@ -120,5 +122,3 @@ const SignUpPage = () => {
     </div>
   );
 };
-
-export default SignUpPage;

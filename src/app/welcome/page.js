@@ -1,9 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
-async function Welcome() {
+import { getLoggedInUser, setUserChurch } from "@/app/appwrite/config";
+import { redirect } from "next/navigation";
 
-  async function createNewAccount(formData) {
+export default async function Welcome() {
+  const user = await getLoggedInUser();
+  if (!user) {
+    redirect('/sign-in');
+  }
+
+  async function handleChurchSelection(formData) {
     'use server'
-    console.log(formData);
+    const data = Object.fromEntries(formData);
+
+    await setUserChurch(user.$id, data.church)
+
+    redirect('/search-results');
   }
 
   return (
@@ -15,33 +26,13 @@ async function Welcome() {
           <div
             className="relative mx-[5vw] flex items-center justify-center pb-16 pt-20 md:pb-20 md:pt-24 lg:py-20"
           >
-            <div className="container max-w-sm">
-              <div className="container mb-6 max-w-lg text-center md:mb-8">
-                <h1 className="mb-5 text-5xl md:mb-6 md:text-5xl lg:text-6xl">Sign Up</h1>
-                <p className="md:text-md">Create a free account to access the full directory.</p>
+            <div className="container max-w-lg">
+              <div className="container mb-6 max-w-lg text-center md:mb-8 space-y-4">
+                <h1 className="mb-5 text-3xl md:mb-6 md:text-4xl lg:text-5xl">Welcome, {user.name}</h1>
+                <p className="md:text-md">crecWorks is a private directory for church members to find and connect with businesses run by fellow church members.</p>
+                <p className="md:text-md">Finish setting up your account by selecting your church below.</p>
               </div>
-              <form action={createNewAccount} className="grid grid-cols-1 gap-6">
-                <div className="flex gap-x-2">
-                  <label htmlFor="name" className="sr-only"> Full name </label>
-                  <input
-                    type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Full Name"
-                    className="block w-1/2 px-6 py-4 text-base text-center text-gray-900 placeholder-gray-500 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
-                    required
-                    defaultValue="First Name From User"
-                  />
-                  <label htmlFor="lastName" className="sr-only"> Last name </label>
-                  <input
-                    type="text"
-                    name="lastName"
-                    id="lastName"
-                    placeholder="Last Name"
-                    className="block w-1/2 px-6 py-4 text-base text-center text-gray-900 placeholder-gray-600 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
-                    required
-                  />
-                </div>
+              <form action={handleChurchSelection} className="grid grid-cols-1 gap-6">
                 <div>
                   <label htmlFor="church" className="sr-only">
                     Church
@@ -67,7 +58,7 @@ async function Welcome() {
                     type="submit"
                     className="border-gray-200 rounded-xl focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary bg-background-alternative text-text-alternative px-6 py-4 bg-gray-900 text-gray-100 hover:bg-gray-300 hover:text-gray-900"
                   >
-                    Create Account
+                    Submit
                   </button>
                 </div>
               </form>
@@ -85,5 +76,3 @@ async function Welcome() {
     </div>
   )
 }
-
-export default Welcome

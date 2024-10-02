@@ -18,10 +18,10 @@ const SignInPage = () => {
       sameSite: "strict",
       secure: true,
       expires: new Date(session.expire),
-      path: "/"
+      path: "/search-results"
     } );
 
-    redirect('/');
+    redirect('/search-results');
   }
 
   return (
