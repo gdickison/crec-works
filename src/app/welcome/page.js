@@ -2,6 +2,7 @@
 async function Welcome() {
 
   async function createNewAccount(formData) {
+    'use server'
     console.log(formData);
   }
 
