@@ -28,7 +28,7 @@ export default async function Welcome() {
           >
             <div className="container max-w-lg">
               <div className="container mb-6 max-w-lg text-center md:mb-8 space-y-4">
-                <h1 className="mb-5 text-3xl md:mb-6 md:text-4xl lg:text-5xl">Welcome, {user.name}</h1>
+                <h1 className="mb-5 text-3xl md:mb-6 md:text-4xl lg:text-5xl">Welcome, {user.name.split(' ')[0]}</h1>
                 <p className="md:text-md">crecWorks is a private directory for church members to find and connect with businesses run by fellow church members.</p>
                 <p className="md:text-md">Finish setting up your account by selecting your church below.</p>
               </div>

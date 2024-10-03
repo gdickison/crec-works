@@ -100,7 +100,7 @@ export default async function SearchResults () {
               overflow: "hidden",
               clip: "rect(0, 0, 0, 0)",
               whiteSpace: "nowrap",
-              wordWrap: "normal",
+              wordWrap: "normal"
             }}
           >
             <option value=""></option>

@@ -20,7 +20,7 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="#" title="">
+                    <a href="/search-results" title="">
                       Construction
                       <span className="absolute inset-0" aria-hidden="true"></span>
                     </a>
@@ -40,7 +40,7 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="#" title="">
+                    <a href="/search-results" title="">
                       Finance & Investing
                       <span className="absolute inset-0" aria-hidden="true"></span>
                     </a>
@@ -60,7 +60,7 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="#" title="">
+                    <a href="/search-results" title="">
                       Software
                       <span className="absolute inset-0" aria-hidden="true"></span>
                     </a>
@@ -82,7 +82,7 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="#" title="">
+                    <a href="/search-results" title="">
                       Jewelry
                       <span className="absolute inset-0" aria-hidden="true"></span>
                     </a>
@@ -100,7 +100,7 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="#" title="">
+                    <a href="/search-results" title="">
                       Plumbing
                       <span className="absolute inset-0" aria-hidden="true"></span>
                     </a>
@@ -118,7 +118,7 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="#" title="">
+                    <a href="/search-results" title="">
                       Online Education
                       <span className="absolute inset-0" aria-hidden="true"></span>
                     </a>

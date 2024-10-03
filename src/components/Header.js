@@ -1,7 +1,18 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { createSessionClient } from "@/app/appwrite/config";
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
-const Header = ({user, logout}) => {
+async function signOut() {
+  'use server'
+  const { account } = await createSessionClient();
+  cookies().delete('session');
+  await account.deleteSession("current");
+  redirect("/");
+}
+
+const Header = ({user}) => {
 
   return <div className="absolute top-0 left-0 w-full z-10 bg-gray-600/50">
     <nav
@@ -27,13 +38,49 @@ const Header = ({user, logout}) => {
           className="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
           style={{height: "var(--height-closed, 0)"}}
         >
-          <div className="first:pt-4 lg:first:pt-0">
-            <a href={`/account/${user?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.name}</a>
-          </div>
+          {user &&
+            <div className="first:pt-4 lg:first:pt-0">
+              <a href={`/account/${user?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.name.split(' ')[0]}</a>
+            </div>
+          }
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
             {user ? (
-              <button
-                type="button"
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  title=""
+                  className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    px-5
+                    py-2
+                    font-sans
+                    text-base
+                    font-semibold
+                    transition-all
+                    duration-200
+                    bg-transparent
+                    border-2
+                    rounded-full
+                    sm:leading-8
+                    text-white
+                    border-primary
+                    hover:bg-white
+                    focus:outline-none
+                    hover:text-black
+                    sm:text-lg
+                    focus:ring-offset-secondary
+                  "
+                  role="button"
+                >
+                  Logout
+                </button>
+              </form>
+            ) :
+            (
+              <Link
+                href="/sign-in"
                 title=""
                 className="
                   inline-flex
@@ -59,74 +106,9 @@ const Header = ({user, logout}) => {
                   focus:ring-offset-secondary
                 "
                 role="button"
-                onClick={logout}
               >
-                Logout
-              </button>
-            ) :
-            (
-              <>
-                <Link
-                  href="/sign-up"
-                  title=""
-                  className="
-                    inline-flex
-                    items-center
-                    justify-center
-                    px-5
-                    py-2
-                    font-sans
-                    text-base
-                    font-semibold
-                    transition-all
-                    duration-200
-                    bg-transparent
-                    border-2
-                    rounded-full
-                    sm:leading-8
-                    text-white
-                    border-primary
-                    hover:bg-white
-                    focus:outline-none
-                    hover:text-black
-                    sm:text-lg
-                    focus:ring-offset-secondary
-                  "
-                  role="button"
-                >
-                  Sign Up
-                </Link>
-                <Link
-                  href="/sign-in"
-                  title=""
-                  className="
-                    inline-flex
-                    items-center
-                    justify-center
-                    px-5
-                    py-2
-                    font-sans
-                    text-base
-                    font-semibold
-                    transition-all
-                    duration-200
-                    bg-transparent
-                    border-2
-                    rounded-full
-                    sm:leading-8
-                    text-white
-                    border-primary
-                    hover:bg-white
-                    focus:outline-none
-                    hover:text-black
-                    sm:text-lg
-                    focus:ring-offset-secondary
-                  "
-                  role="button"
-                >
-                  Sign In
-                </Link>
-              </>
+                Sign In
+              </Link>
             )}
           </div>
         </div>
