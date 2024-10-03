@@ -3,11 +3,10 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable react/prop-types */
 import { useState } from 'react'
-import { usePathname } from 'next/navigation'
 
-function SearchBar({ setResults }) {
+function SearchBar() {
+  const [results, setResults] = useState([])
   const [input, setInput] = useState(undefined)
-  const pathname = usePathname()
 
   const fetchData = (value) => {
     const searchTerms = value.split(' ')
@@ -36,7 +35,7 @@ function SearchBar({ setResults }) {
             type="text"
             className="p-2 w-full border-0 text-base font-normal focus:outline-none"
             id="search_text"
-            placeholder={pathname === '/' ? "Search public listings" : "Search by name or keyword"}
+            placeholder={"Search listings - coming soon..."}
             value={input}
             onChange={e => handleChange(e.target.value)}
           />

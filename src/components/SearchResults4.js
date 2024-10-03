@@ -1,8 +1,25 @@
 /* eslint-disable @next/next/no-img-element */
+import { createSessionClient, getLoggedInUser } from "@/app/appwrite/config";
+import { redirect } from "next/navigation";
 import { listings } from "@/utils/localdata"
 import Link from "next/link"
+import { cookies } from "next/headers";
 
-function SearchResults4() {
+async function signOut() {
+  'use server'
+  const { account } = await createSessionClient();
+  cookies().delete('session');
+  await account.deleteSession("current");
+  redirect("/sign-in");
+}
+
+export default async function SearchResults () {
+
+  const user = await getLoggedInUser();
+  if (!user) {
+    redirect('/sign-in');
+  }
+
   return (
     <section>
       <div
@@ -10,6 +27,9 @@ function SearchResults4() {
       >
         <div className="w-full max-w-lg">
           <h1 className="text-xl font-bold md:text-2xl">Popular Properties</h1>
+          <form action={signOut}>
+            <button type="submit">Sign Out</button>
+          </form>
           <p className="mt-2">
             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.
           </p>
@@ -80,7 +100,7 @@ function SearchResults4() {
               overflow: "hidden",
               clip: "rect(0, 0, 0, 0)",
               whiteSpace: "nowrap",
-              wordWrap: "normal",
+              wordWrap: "normal"
             }}
           >
             <option value=""></option>
@@ -103,9 +123,6 @@ function SearchResults4() {
               </div>
               <div className="flex flex-col p-6">
                 <div className="flex items-center gap-x-4 text-xs">
-                    {/* <time dateTime={listing.datetime} className="text-gray-500">
-                      {listing.date}
-                    </time> */}
                     {listing.categories.map(category => {
                       return (
                         <a
@@ -213,5 +230,3 @@ function SearchResults4() {
     </section>
   )
 }
-
-export default SearchResults4
