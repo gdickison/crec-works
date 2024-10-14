@@ -3,6 +3,7 @@ import { createSessionClient, getLoggedInUser } from "@/app/appwrite/config";
 import { redirect } from "next/navigation";
 import { listings } from "@/utils/localdata"
 import Link from "next/link"
+import Bookmark from "./Bookmark";
 import { cookies } from "next/headers";
 
 async function signOut() {
@@ -118,7 +119,7 @@ export default async function SearchResults () {
                 <img
                   src={`https://picsum.photos/id/${Math.floor(Math.random() * 500) + 1}/200`}
                   alt={`Image ${listing.id}`}
-                  className="aspect-square size-full object-cover"
+                  className="aspect-square size-full object-contain"
                 />
               </div>
               <div className="flex flex-col p-6">
@@ -137,13 +138,13 @@ export default async function SearchResults () {
                   </div>
                 <div className="mb-2 flex items-center justify-between gap-4">
                   <h2 className="text-md font-bold leading-[1.4] md:text-xl">{listing.title}</h2>
-                  <div className="p-2">
+                  {/* <div className="p-2">
                     <svg
                       stroke="currentColor"
                       fill="currentColor"
                       strokeWidth="0"
                       viewBox="0 0 24 24"
-                      className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-text-primary size-10 cursor-pointer size-6"
+                      className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-text-primary size-6 cursor-pointer"
                       height="1em"
                       width="1em"
                       xmlns="http://www.w3.org/2000/svg"
@@ -152,7 +153,8 @@ export default async function SearchResults () {
                         d="M18 2H6c-1.103 0-2 .897-2 2v18l8-4.572L20 22V4c0-1.103-.897-2-2-2zm0 16.553-6-3.428-6 3.428V4h12v14.553z"
                       ></path>
                     </svg>
-                  </div>
+                  </div> */}
+                  <Bookmark/>
                 </div>
                 <p className="mb-3 md:mb-4">
                   {listing.description}
@@ -210,7 +212,7 @@ export default async function SearchResults () {
                     ><span className="text-sm">1 Bath</span>
                   </div>
                 </div>
-                <div className="mt-5 flex items-center justify-between gap-4 md:mt-6">
+                <div className="mt-5 flex items-center justify-between gap-4 md:mt-6 flex-col sm:flex-row">
                   <div>
                     <p className="before:content-[&#x27;_&#x27;]">{listing.author.name} / {listing.author.role}</p>
                     <p className="before:content-[&#x27;_&#x27;]">{listing.email} / {listing.phone}</p>
