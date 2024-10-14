@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import { listings } from "@/utils/localdata"
 import Link from "next/link"
 import Bookmark from "./Bookmark";
+import Location from "./Location";
+import Share from "./Share";
 import { cookies } from "next/headers";
 
 async function signOut() {
@@ -138,63 +140,14 @@ export default async function SearchResults () {
                   </div>
                 <div className="mb-2 flex items-center justify-between gap-4">
                   <h2 className="text-md font-bold leading-[1.4] md:text-xl">{listing.title}</h2>
-                  {/* <div className="p-2">
-                    <svg
-                      stroke="currentColor"
-                      fill="currentColor"
-                      strokeWidth="0"
-                      viewBox="0 0 24 24"
-                      className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-text-primary size-6 cursor-pointer"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M18 2H6c-1.103 0-2 .897-2 2v18l8-4.572L20 22V4c0-1.103-.897-2-2-2zm0 16.553-6-3.428-6 3.428V4h12v14.553z"
-                      ></path>
-                    </svg>
-                  </div> */}
                   <Bookmark/>
                 </div>
                 <p className="mb-3 md:mb-4">
                   {listing.description}
                 </p>
                 <div className="flex flex-wrap gap-4">
-                  <div className="flex items-center gap-2">
-                    <svg
-                      stroke="currentColor"
-                      fill="currentColor"
-                      strokeWidth="0"
-                      viewBox="0 0 24 24"
-                      className="size-6"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 14c2.206 0 4-1.794 4-4s-1.794-4-4-4-4 1.794-4 4 1.794 4 4 4zm0-6c1.103 0 2 .897 2 2s-.897 2-2 2-2-.897-2-2 .897-2 2-2z"
-                      ></path>
-                      <path
-                        d="M11.42 21.814a.998.998 0 0 0 1.16 0C12.884 21.599 20.029 16.44 20 10c0-4.411-3.589-8-8-8S4 5.589 4 9.995c-.029 6.445 7.116 11.604 7.42 11.819zM12 4c3.309 0 6 2.691 6 6.005.021 4.438-4.388 8.423-6 9.73-1.611-1.308-6.021-5.294-6-9.735 0-3.309 2.691-6 6-6z"
-                      ></path></svg
-                    ><span className="text-sm">Location</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <svg
-                      stroke="currentColor"
-                      fill="currentColor"
-                      strokeWidth="0"
-                      viewBox="0 0 24 24"
-                      className="size-6"
-                      height="1em"
-                      width="1em"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M20 9.557V3h-2v2H6V3H4v6.557C2.81 10.25 2 11.525 2 13v4a1 1 0 0 0 1 1h1v4h2v-4h12v4h2v-4h1a1 1 0 0 0 1-1v-4c0-1.475-.811-2.75-2-3.443zM18 7v2h-5V7h5zM6 7h5v2H6V7zm14 9H4v-3c0-1.103.897-2 2-2h12c1.103 0 2 .897 2 2v3z"
-                      ></path></svg
-                    ><span className="text-sm">2 Beds</span>
-                  </div>
+                  <Location/>
+                  <Share/>
                   <div className="flex items-center gap-2">
                     <svg
                       stroke="currentColor"
