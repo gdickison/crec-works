@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { getLoggedInUser, setUserChurch } from "@/app/appwrite/config";
 import { redirect } from "next/navigation";
+import Link from "next/link";
 
 export default async function Welcome() {
   const user = await getLoggedInUser();
@@ -51,7 +52,7 @@ export default async function Welcome() {
                 </div>
                 <div className="flex items-center justify-center">
                   <input id="accept-terms" name="accept-terms" type="checkbox" className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"/>
-                  <label htmlFor="accept-terms" className="ml-3 block text-sm leading-6 text-gray-900">I accept the <a href="#" className="underline text-blue-600 hover:text-blue-700">terms and conditions</a></label>
+                  <label htmlFor="accept-terms" className="ml-3 block text-sm leading-6 text-gray-900">I accept the <Link href="#" className="underline text-blue-600 hover:text-blue-700">terms and conditions</Link></label>
                 </div>
                 <div className="grid-col-1 grid gap-4">
                   <button

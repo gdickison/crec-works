@@ -1,5 +1,6 @@
 import { FaFaucetDrip } from "react-icons/fa6";
 import { MdCastForEducation } from "react-icons/md";
+import Link from "next/link";
 
 
 export default function Categories () {
@@ -20,10 +21,10 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="/search-results" title="">
+                    <Link href="/search-results" title="">
                       Construction
                       <span className="absolute inset-0" aria-hidden="true"></span>
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm font-medium text-gray-500">983 Businesses</p>
                 </div>
@@ -40,10 +41,10 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="/search-results" title="">
+                    <Link href="/search-results" title="">
                       Finance & Investing
                       <span className="absolute inset-0" aria-hidden="true"></span>
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm font-medium text-gray-500">142 Businesses</p>
                 </div>
@@ -60,10 +61,10 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="/search-results" title="">
+                    <Link href="/search-results" title="">
                       Software
                       <span className="absolute inset-0" aria-hidden="true"></span>
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm font-medium text-gray-500">476 Businesses</p>
                 </div>
@@ -82,10 +83,10 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="/search-results" title="">
+                    <Link href="/search-results" title="">
                       Jewelry
                       <span className="absolute inset-0" aria-hidden="true"></span>
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm font-medium text-gray-500">849 Businesses</p>
                 </div>
@@ -100,10 +101,10 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="/search-results" title="">
+                    <Link href="/search-results" title="">
                       Plumbing
                       <span className="absolute inset-0" aria-hidden="true"></span>
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm font-medium text-gray-500">253 Businesses</p>
                 </div>
@@ -118,10 +119,10 @@ export default function Categories () {
                 <div className="flex-shrink-0 w-px h-12 bg-gray-200"></div>
                 <div>
                   <h3 className="text-sm font-bold text-gray-900 sm:text-base lg:text-lg">
-                    <a href="/search-results" title="">
+                    <Link href="/search-results" title="">
                       Online Education
                       <span className="absolute inset-0" aria-hidden="true"></span>
-                    </a>
+                    </Link>
                   </h3>
                   <p className="mt-2 text-sm font-medium text-gray-500">94 Businesses</p>
                 </div>

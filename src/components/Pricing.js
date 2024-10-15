@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
+import Link from 'next/link'
 
 const frequencies = [
   { value: 'monthly', label: 'Monthly', priceSuffix: '/month' },
@@ -124,7 +125,7 @@ export default function Pricing() {
                 <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value]}</span>
                 <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
               </p>
-              <a
+              <Link
                 href={tier.href}
                 aria-describedby={tier.id}
                 className={classNames(
@@ -135,7 +136,7 @@ export default function Pricing() {
                 )}
               >
                 {tier.action} plan
-              </a>
+              </Link>
               <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">

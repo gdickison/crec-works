@@ -40,7 +40,7 @@ const Header = ({user}) => {
         >
           {user &&
             <div className="first:pt-4 lg:first:pt-0">
-              <a href={`/account/${user?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.name.split(' ')[0]}</a>
+              <Link href={`/account/${user?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.name.split(' ')[0]}</Link>
             </div>
           }
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
