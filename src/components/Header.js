@@ -24,7 +24,7 @@ const Header = ({user}) => {
         >
           <Link href="/">
             <p className="tracking-tighter text-black">
-              <span className="font-sans font-normal text-lg xs:text-2xl xl:text-3xl">CREC</span>
+              <span className="font-sans font-normal text-lg xs:text-2xl xl:text-3xl">MyChurch</span>
               <span className="font-serif italic font-normal text-xl xs:text-3xl xl:text-4xl">Works</span>
             </p>
           </Link>

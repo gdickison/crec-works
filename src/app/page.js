@@ -25,7 +25,7 @@ export default async function Home() {
                 <div className="w-full lg:w-2/3">
                   <h1 className="font-sans text-base font-normal tracking-tight text-white text-opacity-70">The business directory for members of the Communion of Reformed Evangelical Churches</h1>
                   <p className="mt-2 md:mt-4 lg:mt-6 tracking-tighter text-white">
-                    <span className="font-sans font-normal text-5xl xs:text-7xl xl:text-8xl">CREC</span>
+                    <span className="font-sans font-normal text-5xl xs:text-7xl xl:text-8xl">MyChurch</span>
                     <span className="font-serif italic font-normal text-6xl xs:text-8xl xl:text-9xl">Works</span>
                   </p>
                 </div>
