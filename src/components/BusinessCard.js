@@ -38,7 +38,9 @@ export default function BusinessCard ({listing}) {
         </div>
         <div className="flex-1 px-2 sm:px-0">
           <div className="mb-2 flex items-center justify-between gap-4">
-            <h2 className="text-md font-bold leading-[1.4] md:text-xl">{listing.title}</h2>
+            <h2 className="text-md font-bold leading-[1.4] md:text-xl">
+              <Link href={`/business-listing/${listing.id}?name=${listing.title}`}>{listing.title}</Link>
+            </h2>
           </div>
           <p className="mb-3 md:mb-4 line-clamp-6">
             {listing.description}
