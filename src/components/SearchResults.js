@@ -2,12 +2,9 @@
 import { createSessionClient, getLoggedInUser } from "@/app/appwrite/config";
 import { redirect } from "next/navigation";
 import { listings } from "@/utils/localdata"
-import Link from "next/link"
-import Bookmark from "./Bookmark";
-import Location from "./Location";
-import Share from "./Share";
-import Like from "./Like";
 import { cookies } from "next/headers";
+import Header from "./Header";
+import BusinessCard from "./BusinessCard";
 
 async function signOut() {
   'use server'
@@ -25,21 +22,18 @@ export default async function SearchResults () {
   }
 
   return (
-    <section>
+    <section className="relative pt-24">
+      <Header
+        user={user}
+      />
       <div
-        className="grid auto-cols-fr grid-cols-1 items-end gap-4 pb-5 md:grid-cols-[1fr_max-content] md:gap-6 md:pb-6"
+        className="flex flex-col sm:flex-row w-full max-w-7xl mx-auto px-4 justify-between"
       >
-        <div className="w-full max-w-lg">
-          <h1 className="text-xl font-bold md:text-2xl">Popular Properties</h1>
-          <form action={signOut}>
-            <button type="submit">Sign Out</button>
-          </form>
-          <p className="mt-2">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse varius enim in eros.
-          </p>
+        <div className="flex items-center">
+          <h1 className="text-xl font-bold md:text-2xl">Popular Listings</h1>
         </div>
         <div className="flex items-center justify-between md:justify-normal">
-          <div className="relative flex size-full items-center">
+          <div className="relative flex md:w-[40rem] items-center">
             <div className="absolute left-3">
               <svg
                 stroke="currentColor"
@@ -57,7 +51,7 @@ export default async function SearchResults () {
               </svg>
             </div>
             <input
-              className="flex size-full min-h-11 border border-border-primary bg-background-primary py-2 align-middle file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 pl-[2.75rem] pr-3 mr-4"
+              className="flex w-full min-h-11 border border-border-primary bg-background-primary py-2 align-middle file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-neutral focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 pl-[2.75rem] pr-3 mr-4"
               placeholder="Search"
             />
           </div>
@@ -70,7 +64,7 @@ export default async function SearchResults () {
             dir="ltr"
             data-state="closed"
             data-placeholder=""
-            className="flex min-h-11 items-center justify-between gap-1 whitespace-nowrap border border-border-primary bg-transparent text-text-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&amp;&gt;span]:line-clamp-1 [&amp;[data-state=open]&gt;svg]:rotate-180 w-[110px] px-4 py-2"
+            className="flex min-h-11 items-center justify-between gap-1 whitespace-nowrap border border-border-primary bg-transparent text-text-primary focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 [&amp;&gt;span]:line-clamp-1 [&amp;[data-state=open]&gt;svg]:rotate-180 w-40 md:w-56 px-4 py-2"
           >
             <span>Sort by</span
             ><svg
@@ -111,62 +105,15 @@ export default async function SearchResults () {
           </select>
         </div>
       </div>
-      <div className="grid w-full auto-cols-fr grid-cols-1 gap-6 lg:grid-cols-2">
-        {listings && listings.map(listing => {
-          return (
-            <div
-              key={listing.id}
-              className="grid auto-cols-fr grid-cols-1 items-center border border-border-primary md:grid-cols-[0.5fr_1fr]"
-            >
-              <div className="size-full overflow-hidden">
-                <img
-                  src={`https://picsum.photos/id/${Math.floor(Math.random() * 500) + 1}/200`}
-                  alt={`Image ${listing.id}`}
-                  className="aspect-square size-full object-contain"
-                />
-              </div>
-              <div className="flex flex-col p-6">
-                <div className="flex items-center gap-x-4 text-xs">
-                    {listing.categories.map(category => {
-                      return (
-                        <a
-                          key={category.title.toLowerCase()}
-                          href={category.href}
-                          className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100"
-                        >
-                          {category.title}
-                        </a>
-                      )
-                    })}
-                  </div>
-                <div className="mb-2 flex items-center justify-between gap-4">
-                  <h2 className="text-md font-bold leading-[1.4] md:text-xl">{listing.title}</h2>
-                  <Bookmark/>
-                </div>
-                <p className="mb-3 md:mb-4">
-                  {listing.description}
-                </p>
-                <div className="flex flex-wrap gap-4">
-                  <Location/>
-                  <Share/>
-                  <Like/>
-                </div>
-                <div className="mt-5 flex items-center justify-between gap-4 md:mt-6 flex-col sm:flex-row">
-                  <div>
-                    <p className="before:content-[&#x27;_&#x27;]">{listing.author.name} / {listing.author.role}</p>
-                    <p className="before:content-[&#x27;_&#x27;]">{listing.email} / {listing.phone}</p>
-                  </div>
-                  <Link
-                    href={listing.website}
-                    className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary bg-background-alternative text-text-alternative px-5 py-2 hover:bg-blue-500 hover:text-blue-50 rounded-lg"
-                  >
-                    Website
-                  </Link>
-                </div>
-              </div>
-            </div>
-          )
-        })}
+      <div className="grid w-full auto-cols-fr grid-cols-1 gap-6 lg:grid-cols-2 m-4 max-w-7xl mx-auto">
+      {listings && listings.map(listing => {
+        return (
+          <BusinessCard
+            key={listing.id}
+            listing={listing}
+          />
+        )
+      })}
       </div>
     </section>
   )
