@@ -1,12 +1,12 @@
 import React from 'react'
 import Reviews1 from '@/components/Reviews1'
-import SearchResults4 from '@/components/SearchResults4'
 
-function TestPage() {
+function TestPage({params, searchParams}) {
   return (
     <div>
+      <h1>{searchParams.name}</h1>
+      <h2>{params.id}</h2>
       <Reviews1/>
-      <SearchResults4/> {/* Use this one. Hide the images on phones. */}
     </div>
   )
 }

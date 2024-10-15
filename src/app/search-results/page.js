@@ -1,7 +1,7 @@
-import SearchResults4 from "@/components/SearchResults4";
+import SearchResults from "@/components/SearchResults";
 
-export default function SearchResults () {
+export default function SearchResultsPage () {
   return (
-    <SearchResults4/>
+    <SearchResults/>
   )
 }
