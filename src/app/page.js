@@ -7,8 +7,10 @@ import Categories from "@/components/Categories";
 import Pricing from "@/components/Pricing";
 import Header from "@/components/Header";
 import Link from "next/link";
-
+import { getData } from "./actions";
 export default async function Home() {
+  const data = await getData();
+  console.log(data);
   const user = await getLoggedInUser();
 
   return (
