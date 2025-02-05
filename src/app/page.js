@@ -20,7 +20,7 @@ export default async function Home() {
         </div>
         <div className="relative space-y-4 md:space-y-8 lg:space-y-14 max-w-screen-2xl mx-auto">
           <div className="w-full h-full p-0.5 border-red-500 flex flex-col lg:flex-row items-center">
-            <div className="lg:w-1/2 h-full m-2 p-0.5 border-green-500 flex justify-center">
+            <div className="h-full m-2 p-0.5 border-green-500 flex justify-center">
               <div className="px-6 sm:px-8 lg:px-12 max-w-7xl">
                 <div className="w-full lg:w-2/3">
                   <h1 className="font-sans text-base font-normal tracking-tight text-white text-opacity-70">The business directory for members of the Communion of Reformed Evangelical Churches</h1>
@@ -31,7 +31,7 @@ export default async function Home() {
                 </div>
               </div>
             </div>
-            <div className="lg:w-1/2 h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
+            <div className="h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
               <CallToAction user={user?.$id} />
             </div>
           </div>
