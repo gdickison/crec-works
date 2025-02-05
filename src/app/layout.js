@@ -20,9 +20,9 @@ export default function RootLayout({ children }) {
     <ClerkProvider>
       <html lang="en">
         <body className={`${inter.className} relative`}>
-          <SignedOut>
+          {/* <SignedOut>
             <SignInButton />
-          </SignedOut>
+          </SignedOut> */}
           <SignedIn>
             <UserButton />
           </SignedIn>
