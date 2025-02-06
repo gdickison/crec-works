@@ -1,22 +1,20 @@
 // 'use client'
 /* eslint-disable @next/next/no-img-element */
-import { getLoggedInUser } from "@/app/appwrite/config";
 import SearchBar from "@/components/SearchBar";
 import CallToAction from "@/components/CallToAction";
 import Categories from "@/components/Categories";
 import Pricing from "@/components/Pricing";
-import Header from "@/components/Header";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { getData } from "./actions";
+
 export default async function Home() {
   const data = await getData();
-  console.log(data);
-  const user = await getLoggedInUser();
+  console.log('data from Neon', data);
 
   return (
     <div>
       <div className="relative pt-24 pb-12 bg-black xl:pt-48 sm:pb-16 lg:pb-32 xl:pb-48 2xl:pb-56">
-        <Header user={user} />
         <div className="absolute inset-0">
           <img className="object-cover w-full h-full opacity-[65%]" src="/images/farm_work.jpg" alt="" />
         </div>
@@ -33,14 +31,16 @@ export default async function Home() {
                 </div>
               </div>
             </div>
-            <div className="h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
-              <CallToAction user={user?.$id} />
-            </div>
+            <SignedOut>
+              <div className="h-full m-2 py-8 px-0.5 border-green-500 flex items-center">
+                <CallToAction />
+              </div>
+            </SignedOut>
           </div>
           <div className="">
             <p className="text-white px-12 md:px-24">Discover trusted businesses within the CREC. Whether you are looking for a local service or want to connect with professionals across the nation, our directory is here to help you find what you need. Members can log in to access the full directory and manage their business listings. Start exploring today!</p>
           </div>
-          {user &&
+          <SignedIn>
             <div className="flex flex-col gap-4">
               <div className="">
                 <SearchBar/>
@@ -49,14 +49,14 @@ export default async function Home() {
                 <Link href={`/search-results`} className="text-white text-center text-xl underline">See sample search results</Link>
               </div>
             </div>
-          }
+          </SignedIn>
         </div>
       </div>
-      {user &&
+      <SignedIn>
         <div>
           <Categories/>
         </div>
-      }
+      </SignedIn>
       <Pricing/>
     </div>
   );

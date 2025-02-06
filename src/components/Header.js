@@ -1,18 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { createSessionClient } from "@/app/appwrite/config";
-import { redirect } from "next/navigation";
-import { cookies } from "next/headers";
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { auth, clerkClient } from "@clerk/nextjs/server";
 
-async function signOut() {
-  'use server'
-  const { account } = await createSessionClient();
-  cookies().delete('session');
-  await account.deleteSession("current");
-  redirect("/");
-}
+export default async function Header () {
 
-const Header = ({user}) => {
+  const { userId } = await auth();
+  let user;
+
+  if (userId) {
+    const client = await clerkClient();
+    user = await client.users.getUser(userId);
+  }
 
   return <div className="absolute top-0 left-0 w-full z-10 bg-gray-600/50">
     <nav
@@ -38,48 +37,17 @@ const Header = ({user}) => {
           className="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
           style={{height: "var(--height-closed, 0)"}}
         >
-          {user &&
+          <SignedIn>
             <div className="first:pt-4 lg:first:pt-0">
-              <Link href={`/account/${user?.$id}`} className="block py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.name.split(' ')[0]}</Link>
+              <p className="py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.firstName}</p>
             </div>
-          }
+          </SignedIn>
           <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
-            {user ? (
-              <form action={signOut}>
-                <button
-                  type="submit"
-                  title=""
-                  className="
-                    inline-flex
-                    items-center
-                    justify-center
-                    px-5
-                    py-2
-                    font-sans
-                    text-base
-                    font-semibold
-                    transition-all
-                    duration-200
-                    bg-transparent
-                    border-2
-                    rounded-full
-                    sm:leading-8
-                    text-white
-                    border-primary
-                    hover:bg-white
-                    focus:outline-none
-                    hover:text-black
-                    sm:text-lg
-                    focus:ring-offset-secondary
-                  "
-                  role="button"
-                >
-                  Logout
-                </button>
-              </form>
-            ) :
-            (
-              <Link
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+            <SignedOut>
+            <Link
                 href="/sign-in"
                 title=""
                 className="
@@ -109,12 +77,10 @@ const Header = ({user}) => {
               >
                 Sign In
               </Link>
-            )}
+            </SignedOut>
           </div>
         </div>
       </div>
     </nav>
   </div>;
 };
-
-export default Header;
