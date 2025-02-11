@@ -103,11 +103,12 @@ export default function CreateListing() {
   } = useForm({
     defaultValues: {
       categories: [],
-      author: {
+      owner: {
         name: '',
         role: '',
-        href: '',
-        imageUrl: ''
+        email: '',
+        phone: '',
+        authority: false
       }
     }
   });
@@ -143,6 +144,7 @@ export default function CreateListing() {
       <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28">
         <div className="max-w-2xl mx-auto p-4">
           <h1 className="text-2xl font-bold mb-6">Create New Business Listing</h1>
+          <p className="text-sm text-gray-500 mb-6">Please fill out the form below to provide the information that will appear in your new business listing. All fields are required.</p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Basic Information */}
             <div className="space-y-4">
@@ -233,63 +235,30 @@ export default function CreateListing() {
               </div>
             </div>
 
-            {/* Author Information */}
+            {/* Contact Information */}
             <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Author Information</h2>
+              <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
                 <label className="block text-sm font-medium mb-1">Name</label>
                 <input
-                  {...register('author.name', { required: 'Author name is required' })}
+                  {...register('owner.name', { required: 'Owner name is required' })}
                   className="w-full px-3 py-2 border rounded-md"
                 />
-                {errors.author?.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.author.name.message}</p>
+                {errors.owner?.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.owner.name.message}</p>
                 )}
               </div>
 
               <div>
                 <label className="block text-sm font-medium mb-1">Role</label>
                 <input
-                  {...register('author.role', { required: 'Author role is required' })}
+                  {...register('owner.role', { required: 'Owner role is required' })}
                   className="w-full px-3 py-2 border rounded-md"
                 />
-                {errors.author?.role && (
-                  <p className="text-red-500 text-sm mt-1">{errors.author.role.message}</p>
+                {errors.owner?.role && (
+                  <p className="text-red-500 text-sm mt-1">{errors.owner.role.message}</p>
                 )}
               </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Author URL</label>
-                <input
-                  {...register('author.href', { required: 'Author URL is required' })}
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-                {errors.author?.href && (
-                  <p className="text-red-500 text-sm mt-1">{errors.author.href.message}</p>
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium mb-1">Author Image URL</label>
-                <input
-                  {...register('author.imageUrl', {
-                    required: 'Author image URL is required',
-                    pattern: {
-                      value: /^https?:\/\/.+/,
-                      message: 'Must be a valid URL'
-                    }
-                  })}
-                  className="w-full px-3 py-2 border rounded-md"
-                />
-                {errors.author?.imageUrl && (
-                  <p className="text-red-500 text-sm mt-1">{errors.author.imageUrl.message}</p>
-                )}
-              </div>
-            </div>
-
-            {/* Contact Information */}
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
                 <label className="block text-sm font-medium mb-1">Email</label>
                 <input
@@ -336,21 +305,20 @@ export default function CreateListing() {
                   <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
                 )}
               </div>
-
               <div>
-                <label className="block text-sm font-medium mb-1">Website</label>
                 <input
-                  {...register('website', {
-                    required: 'Website is required',
-                    pattern: {
-                      value: /^https?:\/\/.+/,
-                      message: 'Must be a valid URL'
-                    }
+                  type="checkbox"
+                  id="authority"
+                  defaultChecked={false}
+                  {...register('authority', {
+                    required: 'You must confirm you have authority to post this listing'
                   })}
-                  className="w-full px-3 py-2 border rounded-md"
                 />
-                {errors.website && (
-                  <p className="text-red-500 text-sm mt-1">{errors.website.message}</p>
+                <label htmlFor="authority" className="ml-2">
+                  I am the owner or principal of this business and I have authority to post this listing
+                </label>
+                {errors.authority && (
+                  <p className="text-red-500 text-sm mt-1">{errors.authority.message}</p>
                 )}
               </div>
             </div>
