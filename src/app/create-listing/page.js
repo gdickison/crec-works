@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
-import { categoryOptions } from '@/utils/categories';
+import { categoryOptions } from '@/utils/listingOptions';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -145,6 +145,7 @@ export default function CreateListing() {
       <section id="relume" className="px-[5%] py-16 md:py-24 lg:py-28">
         <div className="max-w-2xl mx-auto p-4">
           <h1 className="text-2xl font-bold mb-6">Create New Business Listing</h1>
+          <p className="text-sm text-gray-500 mb-6">Listings are for your personal services. You may list your own business, or your services within a larger organization. For example, if you are a financial advisor, you may list your services under your own business name, or under the name of the organization you work for.</p>
           <p className="text-sm text-gray-500 mb-6">Please fill out the form below to provide the information that will appear in your new business listing. All fields are required.</p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Basic Information */}
@@ -214,24 +215,41 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-1">Image URL</label>
+                <label className="block text-md font-medium mb-1">Business Logo or Image</label>
                 <input
-                  {...register('imageUrl', {
-                    required: 'Image URL is required',
-                    pattern: {
-                      value: /^https?:\/\/.+/,
-                      message: 'Must be a valid URL'
+                  type="file"
+                  accept=".jpg,.jpeg,.png,.webp,.svg"
+                  {...register('imageFile', {
+                    required: 'Image is required',
+                    validate: {
+                      lessThan1MB: (files) =>
+                        !files[0] || files[0].size <= 1000000 || 'Image must be less than 1MB',
+                      acceptedFormats: (files) =>
+                        !files[0] ||
+                        ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/svg+xml'].includes(files[0]?.type) ||
+                        'Only JPG, JPEG, PNG, WEBP and SVG files are allowed'
                     }
                   })}
-                  className={inputClassName}
+                  className={`w-full px-3 py-2 border rounded-md text-sm
+                    file:mr-4 file:py-2 file:px-4
+                    file:rounded-md file:border-0
+                    file:text-sm file:font-semibold
+                    file:bg-blue-50 file:text-blue-700
+                    hover:file:bg-blue-100`}
                 />
-                {errors.imageUrl && (
-                  <p className="text-red-500 text-sm mt-1">{errors.imageUrl.message}</p>
+                {errors.imageFile && (
+                  <p className="text-red-500 text-sm mt-1">{errors.imageFile.message}</p>
                 )}
+                <p className="text-gray-500 text-sm mt-1">
+                  Maximum file size: 1MB. Accepted formats: JPG, JPEG, PNG, WEBP, SVG
+                </p>
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-2">Select Options:</label>
+                <label className="block text-md font-medium mb-2">Service Categories:</label>
+                <p className="text-gray-500 text-sm mb-1">
+                  Select one or more categories that best describe your business.
+                </p>
                 <Select
                   isMulti
                   options={categoryOptions}
@@ -246,7 +264,7 @@ export default function CreateListing() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
-                <label className="block text-md font-medium mb-1">Name</label>
+                <label className="block text-md font-medium mb-1">Your Name</label>
                 <input
                   {...register('owner.name', { required: 'Owner name is required' })}
                   className={inputClassName}
@@ -257,10 +275,14 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-1">Role</label>
+                <label className="block text-md font-medium mb-1">Roles</label>
+                <p className="text-gray-500 text-sm mt-1">
+                  Enter the role, title, or certification that best describes you.
+                </p>
                 <input
                   {...register('owner.role', { required: 'Owner role is required' })}
                   className={inputClassName}
+                  placeholder="e.g. Owner, Founder, CEO, Senior Advisor, etc."
                 />
                 {errors.owner?.role && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner.role.message}</p>
@@ -322,7 +344,7 @@ export default function CreateListing() {
                   })}
                 />
                 <label htmlFor="authority" className="ml-2">
-                  I am the owner or principal of this business and I have authority to post this listing
+                  I am an owner of this business or the provider of the services listed, and a member in good standing of a member church, and I have authority to post this listing.
                 </label>
                 {errors.authority && (
                   <p className="text-red-500 text-sm mt-1">{errors.authority.message}</p>
