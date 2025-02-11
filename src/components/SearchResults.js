@@ -1,22 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { getLoggedInUser } from "@/app/appwrite/config";
-import { redirect } from "next/navigation";
 import { listings } from "@/utils/localdata"
-import Header from "./Header";
 import BusinessCard from "./BusinessCard";
 
 export default async function SearchResults () {
 
-  const user = await getLoggedInUser();
-  if (!user) {
-    redirect('/sign-in');
-  }
-
   return (
     <section className="relative pt-24">
-      <Header
-        user={user}
-      />
       <div
         className="flex flex-col sm:flex-row w-full max-w-7xl mx-auto px-4 justify-between"
       >

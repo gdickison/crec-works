@@ -47,12 +47,23 @@ export default async function SignUpPage () {
               </div>
               <form action={registerNewUser} className="grid grid-cols-1 gap-6">
                 <div className="flex gap-x-2">
-                  <label htmlFor="name" className="sr-only"> Full name </label>
+                  <label htmlFor="first_name" className="sr-only"> First name </label>
                   <input
                     type="text"
-                    name="name"
-                    id="name"
-                    placeholder="Full Name"
+                    name="first_name"
+                    id="first_name"
+                    placeholder="First Name"
+                    className="block w-full px-6 py-4 text-base text-center text-gray-900 placeholder-gray-500 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
+                    required
+                  />
+                </div>
+                <div className="flex gap-x-2">
+                  <label htmlFor="last_name" className="sr-only"> Last name </label>
+                  <input
+                    type="text"
+                    name="last_name"
+                    id="last_name"
+                    placeholder="Last Name"
                     className="block w-full px-6 py-4 text-base text-center text-gray-900 placeholder-gray-500 bg-white border border-gray-200 rounded-xl focus:bg-white focus:border-blue-600 focus:ring-1 focus:ring-blue-600 focus:outline-none"
                     required
                   />
