@@ -11,11 +11,7 @@ export default function CreateListing() {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [addressDetails, setAddressDetails] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-
-  const handleChange = (selected) => {
-    setSelectedOptions(selected);
-  };
+  const selectId = 'service-categories';
 
   const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
@@ -250,12 +246,31 @@ export default function CreateListing() {
                 <p className="text-gray-500 text-sm mb-1">
                   Select one or more categories that best describe your business.
                 </p>
-                <Select
-                  isMulti
-                  options={categoryOptions}
-                  value={selectedOptions}
-                  onChange={handleChange}
-                  className="mb-4"
+                <Controller
+                  name="categories"
+                  control={control}
+                  rules={{
+                    required: 'Select at least one category',
+                    validate: value => !value || value.length <= 3 || 'Maximum 3 categories allowed'
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Select
+                      isMulti
+                      options={categoryOptions}
+                      value={categoryOptions.filter(option =>
+                        value?.some(cat => cat.value === option.value)
+                      )}
+                      onChange={(selected) => {
+                        onChange(selected?.map(item => ({
+                          value: item.value,
+                          label: item.label,
+                          href: item.href
+                        })));
+                      }}
+                      className="w-full"
+                      instanceId={selectId}
+                    />
+                  )}
                 />
               </div>
             </div>
