@@ -100,6 +100,7 @@ export default function CreateListing() {
     handleSubmit,
     control,
     formState: { errors },
+    watch
   } = useForm({
     defaultValues: {
       categories: [],
@@ -137,7 +138,7 @@ export default function CreateListing() {
     }
   };
 
-  const inputClassName = "mt-2 block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#4e02e4] sm:text-medium sm:leading-6 bg-gray-100";
+  const inputClassName = "mt-2 block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#4e02e4] sm:text-medium sm:leading-6 bg-gray-100 text-sm placeholder:text-sm";
 
   return (
     <div className="pt-20 w-full">
@@ -152,7 +153,7 @@ export default function CreateListing() {
                 <label className="block text-sm font-medium mb-1">Business Name</label>
                 <input
                   {...register('business_name', { required: 'Title is required' })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                 />
                 {errors.business_name && (
                   <p className="text-red-500 text-sm mt-1">{errors.business_name.message}</p>
@@ -162,11 +163,12 @@ export default function CreateListing() {
               <div>
                 <label className="block sm:col-span-6 font-medium leading-6 text-gray-900">
                   Physical Address
+                  <p className="text-sm text-gray-500 mt-3">Your physical address will not be shown on the listing, but will be used in search results and to show your service area.</p>
                   <input
                     ref={inputRef}
                     type="text"
                     className={inputClassName}
-                    // placeholder="What you enter in to Google Maps to find your ranch"
+                    placeholder="Physical Address (No PO Boxes)"
                   />
                 </label>
                 {addressDetails && (
@@ -187,7 +189,7 @@ export default function CreateListing() {
                 <label className="block text-sm font-medium mb-1">Website URL</label>
                 <input
                   {...register('website_url', { required: 'URL slug is required' })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                 />
                 {errors.website_url && (
                   <p className="text-red-500 text-sm mt-1">{errors.website_url.message}</p>
@@ -198,9 +200,14 @@ export default function CreateListing() {
                 <label className="block text-sm font-medium mb-1">Description</label>
                 <textarea
                   {...register('description', { required: 'Description is required' })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                   rows={4}
+                  placeholder="Only the first 250 characters will be shown on the listing. The full description will be shown on the listing page."
                 />
+                <div className="flex justify-between text-sm text-gray-500 mt-1">
+                  <span>{watch('description')?.length || 0} characters</span>
+                  <span>First 250 shown on listing</span>
+                </div>
                 {errors.description && (
                   <p className="text-red-500 text-sm mt-1">{errors.description.message}</p>
                 )}
@@ -216,7 +223,7 @@ export default function CreateListing() {
                       message: 'Must be a valid URL'
                     }
                   })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                 />
                 {errors.imageUrl && (
                   <p className="text-red-500 text-sm mt-1">{errors.imageUrl.message}</p>
@@ -242,7 +249,7 @@ export default function CreateListing() {
                 <label className="block text-sm font-medium mb-1">Name</label>
                 <input
                   {...register('owner.name', { required: 'Owner name is required' })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                 />
                 {errors.owner?.name && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner.name.message}</p>
@@ -253,7 +260,7 @@ export default function CreateListing() {
                 <label className="block text-sm font-medium mb-1">Role</label>
                 <input
                   {...register('owner.role', { required: 'Owner role is required' })}
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                 />
                 {errors.owner?.role && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner.role.message}</p>
@@ -270,7 +277,7 @@ export default function CreateListing() {
                     }
                   })}
                   type="email"
-                  className="w-full px-3 py-2 border rounded-md"
+                  className={inputClassName}
                 />
                 {errors.email && (
                   <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
@@ -297,7 +304,7 @@ export default function CreateListing() {
                         onChange(formatted);
                       }}
                       placeholder="(555) 555-5555"
-                      className="w-full px-3 py-2 border rounded-md"
+                      className={inputClassName}
                     />
                   )}
                 />
