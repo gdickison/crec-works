@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
+import { useUser } from "@clerk/nextjs";
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -12,7 +13,8 @@ export default function CreateListing() {
   const autocompleteRef = useRef(null);
   const [addressDetails, setAddressDetails] = useState(null);
   const selectId = 'service-categories';
-
+  const { user, isLoaded } = useUser();
+  // console.log(user);
   const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
 
   useEffect(() => {
@@ -126,6 +128,7 @@ export default function CreateListing() {
       const formData = {
         ...data,
         created_date: new Date().toISOString(),
+        userId: user.id,
       };
 
       console.log('Form submitted:', formData);
@@ -136,6 +139,10 @@ export default function CreateListing() {
   };
 
   const inputClassName = "mt-2 block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#4e02e4] sm:text-medium sm:leading-6 bg-gray-100 text-sm placeholder:text-sm";
+
+  if (!isLoaded) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="pt-20 w-full">
