@@ -150,7 +150,7 @@ export default function CreateListing() {
             {/* Basic Information */}
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-1">Business Name</label>
+                <label className="block text-md font-medium mb-1">Business Name</label>
                 <input
                   {...register('business_name', { required: 'Title is required' })}
                   className={inputClassName}
@@ -161,7 +161,7 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block sm:col-span-6 font-medium leading-6 text-gray-900">
+                <label className="block sm:col-span-6 text-md font-medium leading-6 text-gray-900">
                   Physical Address
                   <p className="text-sm text-gray-500 mt-3">Your physical address will not be shown on the listing, but will be used in search results and to show your service area.</p>
                   <input
@@ -186,7 +186,7 @@ export default function CreateListing() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Website URL</label>
+                <label className="block text-md font-medium mb-1">Website URL</label>
                 <input
                   {...register('website_url', { required: 'URL slug is required' })}
                   className={inputClassName}
@@ -197,7 +197,7 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Description</label>
+                <label className="block text-md font-medium mb-1">Description</label>
                 <textarea
                   {...register('description', { required: 'Description is required' })}
                   className={inputClassName}
@@ -214,7 +214,7 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Image URL</label>
+                <label className="block text-md font-medium mb-1">Image URL</label>
                 <input
                   {...register('imageUrl', {
                     required: 'Image URL is required',
@@ -231,7 +231,7 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-2">Select Options:</label>
+                <label className="block text-md font-medium mb-2">Select Options:</label>
                 <Select
                   isMulti
                   options={categoryOptions}
@@ -246,7 +246,7 @@ export default function CreateListing() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
-                <label className="block text-sm font-medium mb-1">Name</label>
+                <label className="block text-md font-medium mb-1">Name</label>
                 <input
                   {...register('owner.name', { required: 'Owner name is required' })}
                   className={inputClassName}
@@ -257,7 +257,7 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Role</label>
+                <label className="block text-md font-medium mb-1">Role</label>
                 <input
                   {...register('owner.role', { required: 'Owner role is required' })}
                   className={inputClassName}
@@ -267,7 +267,7 @@ export default function CreateListing() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium mb-1">Email</label>
+                <label className="block text-md font-medium mb-1">Email</label>
                 <input
                   {...register('email', {
                     required: 'Email is required',
@@ -285,7 +285,7 @@ export default function CreateListing() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium mb-1">Phone</label>
+                <label className="block text-md font-medium mb-1">Phone</label>
                 <Controller
                   name="phone"
                   control={control}
