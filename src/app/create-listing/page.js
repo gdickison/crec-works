@@ -3,15 +3,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
+import { categoryOptions } from '@/utils/categories';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
-
-const categoryOptions = [
-  { value: 'restaurants', label: 'Restaurants', href: '/categories/restaurants' },
-  { value: 'retail', label: 'Retail', href: '/categories/retail' },
-  { value: 'services', label: 'Services', href: '/categories/services' },
-  // Add more categories as needed
-];
 
 export default function CreateListing() {
   const inputRef = useRef(null);
