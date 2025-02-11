@@ -5,6 +5,8 @@ import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
 import { useUser } from "@clerk/nextjs";
+import { uploadListingImage } from './actions';
+import Loader from '@/components/Loader';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -101,15 +103,12 @@ export default function CreateListing() {
     watch
   } = useForm({
     defaultValues: {
-      phone: '',
       categories: [],
-      owner: {
-        name: '',
-        role: '',
-        email: '',
-        phone: '',
-        authority: false
-      }
+      owner_name: isLoaded ? `${user?.fullName}` : '',
+      owner_role: '',
+      business_email: isLoaded ? `${user?.primaryEmailAddress.emailAddress}` : '',
+      business_phone: '',
+      authority: false
     }
   });
 
@@ -125,10 +124,29 @@ export default function CreateListing() {
 
   const onSubmit = async (data) => {
     try {
+      // Handle avatar upload first if there is one
+      let imageFile = data.imageFile || null
+      if (data.imageFile && data.imageFile instanceof FileList && data.imageFile.length > 0) {
+        const file = data.imageFile[0]
+        // Convert File to ArrayBuffer, then to Base64
+        const buffer = await file.arrayBuffer()
+        const base64 = Buffer.from(buffer).toString('base64')
+
+        // Create a serializable object with the file data
+        const fileData = {
+          name: file.name,
+          type: file.type,
+          base64: base64
+        }
+        imageFile = await uploadListingImage(fileData)
+      }
+
       const formData = {
         ...data,
         created_date: new Date().toISOString(),
+        location: addressDetails,
         userId: user.id,
+        imageFile: imageFile
       };
 
       console.log('Form submitted:', formData);
@@ -141,7 +159,7 @@ export default function CreateListing() {
   const inputClassName = "mt-2 block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#4e02e4] sm:text-medium sm:leading-6 bg-gray-100 text-sm placeholder:text-sm";
 
   if (!isLoaded) {
-    return <div>Loading...</div>;
+    return <Loader />;
   }
 
   return (
@@ -287,34 +305,36 @@ export default function CreateListing() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
+              {console.log('isLoaded', isLoaded)}
+              {console.log('user', user)}
                 <label className="block text-md font-medium mb-1">Your Name</label>
                 <input
-                  {...register('owner.name', { required: 'Owner name is required' })}
+                  {...register('owner_name', { required: 'Owner name is required' })}
                   className={inputClassName}
                 />
-                {errors.owner?.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.owner.name.message}</p>
+                {errors.owner_name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.owner_name.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-1">Roles</label>
+                <label className="block text-md font-medium mb-1">Your Role</label>
                 <p className="text-gray-500 text-sm mt-1">
                   Enter the role, title, or certification that best describes you.
                 </p>
                 <input
-                  {...register('owner.role', { required: 'Owner role is required' })}
+                  {...register('owner_role', { required: 'Owner role is required' })}
                   className={inputClassName}
                   placeholder="e.g. Owner, Founder, CEO, Senior Advisor, etc."
                 />
-                {errors.owner?.role && (
-                  <p className="text-red-500 text-sm mt-1">{errors.owner.role.message}</p>
+                {errors.owner_role && (
+                  <p className="text-red-500 text-sm mt-1">{errors.owner_role.message}</p>
                 )}
               </div>
               <div>
-                <label className="block text-md font-medium mb-1">Email</label>
+                <label className="block text-md font-medium mb-1">Business Email</label>
                 <input
-                  {...register('email', {
+                  {...register('business_email', {
                     required: 'Email is required',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -324,15 +344,15 @@ export default function CreateListing() {
                   type="email"
                   className={inputClassName}
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                {errors.business_email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.business_email.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-1">Phone</label>
+                <label className="block text-md font-medium mb-1">Business Phone</label>
                 <Controller
-                  name="phone"
+                  name="business_phone"
                   control={control}
                   rules={{
                     required: 'Phone number is required',
@@ -353,8 +373,8 @@ export default function CreateListing() {
                     />
                   )}
                 />
-                {errors.phone && (
-                  <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                {errors.business_phone && (
+                  <p className="text-red-500 text-sm mt-1">{errors.business_phone.message}</p>
                 )}
               </div>
               <div>
