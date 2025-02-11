@@ -99,6 +99,7 @@ export default function CreateListing() {
     watch
   } = useForm({
     defaultValues: {
+      phone: '',
       categories: [],
       owner: {
         name: '',
