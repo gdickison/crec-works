@@ -4,6 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
+import { useUser } from "@clerk/nextjs";
+import { uploadListingImage, createListing } from './actions';
+import Loader from '@/components/Loader';
+import { useRouter } from 'next/navigation';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
@@ -11,13 +15,11 @@ export default function CreateListing() {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [addressDetails, setAddressDetails] = useState(null);
-  const [selectedOptions, setSelectedOptions] = useState([]);
-
-  const handleChange = (selected) => {
-    setSelectedOptions(selected);
-  };
-
+  const selectId = 'service-categories';
+  const { user, isLoaded } = useUser();
+  // console.log(user);
   const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
+  const router = useRouter();
 
   useEffect(() => {
     const loadGoogleMapsScript = () => {
@@ -100,17 +102,16 @@ export default function CreateListing() {
     handleSubmit,
     control,
     formState: { errors },
-    watch
+    watch,
+    reset
   } = useForm({
     defaultValues: {
       categories: [],
-      owner: {
-        name: '',
-        role: '',
-        email: '',
-        phone: '',
-        authority: false
-      }
+      owner_name: isLoaded ? `${user?.fullName}` : '',
+      owner_role: '',
+      business_email: isLoaded ? `${user?.primaryEmailAddress.emailAddress}` : '',
+      business_phone: '',
+      authority: false
     }
   });
 
@@ -126,19 +127,50 @@ export default function CreateListing() {
 
   const onSubmit = async (data) => {
     try {
+      // Handle avatar upload first if there is one
+      let imageFile = data.imageFile || null
+      if (data.imageFile && data.imageFile instanceof FileList && data.imageFile.length > 0) {
+        const file = data.imageFile[0]
+        // Convert File to ArrayBuffer, then to Base64
+        const buffer = await file.arrayBuffer()
+        const base64 = Buffer.from(buffer).toString('base64')
+
+        // Create a serializable object with the file data
+        const fileData = {
+          name: file.name,
+          type: file.type,
+          base64: base64
+        }
+        imageFile = await uploadListingImage(fileData)
+      }
+
       const formData = {
         ...data,
         created_date: new Date().toISOString(),
+        location: addressDetails,
+        userId: user.id,
+        imageFile: imageFile
       };
 
-      console.log('Form submitted:', formData);
-      // TODO: Add your API call here
+      await createListing(formData);
+      document.getElementById('listing_submission_success').showModal()
+      reset() // Reset the form fields
+      // Add a slight delay to show the success modal before redirecting
+      setTimeout(() => {
+        document.getElementById('listing_submission_success').close();
+        router.push('/'); // Redirect to home page
+      }, 2000); // 2 second delay
     } catch (error) {
       console.error('Error creating listing:', error);
+      document.getElementById('listing_submission_error').showModal()
     }
   };
 
   const inputClassName = "mt-2 block w-full rounded-md border-0 py-2.5 px-4 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#4e02e4] sm:text-medium sm:leading-6 bg-gray-100 text-sm placeholder:text-sm";
+
+  if (!isLoaded) {
+    return <Loader />;
+  }
 
   return (
     <div className="pt-20 w-full">
@@ -250,12 +282,31 @@ export default function CreateListing() {
                 <p className="text-gray-500 text-sm mb-1">
                   Select one or more categories that best describe your business.
                 </p>
-                <Select
-                  isMulti
-                  options={categoryOptions}
-                  value={selectedOptions}
-                  onChange={handleChange}
-                  className="mb-4"
+                <Controller
+                  name="categories"
+                  control={control}
+                  rules={{
+                    required: 'Select at least one category',
+                    validate: value => !value || value.length <= 3 || 'Maximum 3 categories allowed'
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <Select
+                      isMulti
+                      options={categoryOptions}
+                      value={categoryOptions.filter(option =>
+                        value?.some(cat => cat.value === option.value)
+                      )}
+                      onChange={(selected) => {
+                        onChange(selected?.map(item => ({
+                          value: item.value,
+                          label: item.label,
+                          href: item.href
+                        })));
+                      }}
+                      className="w-full"
+                      instanceId={selectId}
+                    />
+                  )}
                 />
               </div>
             </div>
@@ -264,34 +315,36 @@ export default function CreateListing() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
+              {console.log('isLoaded', isLoaded)}
+              {console.log('user', user)}
                 <label className="block text-md font-medium mb-1">Your Name</label>
                 <input
-                  {...register('owner.name', { required: 'Owner name is required' })}
+                  {...register('owner_name', { required: 'Owner name is required' })}
                   className={inputClassName}
                 />
-                {errors.owner?.name && (
-                  <p className="text-red-500 text-sm mt-1">{errors.owner.name.message}</p>
+                {errors.owner_name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.owner_name.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-1">Roles</label>
+                <label className="block text-md font-medium mb-1">Your Role</label>
                 <p className="text-gray-500 text-sm mt-1">
                   Enter the role, title, or certification that best describes you.
                 </p>
                 <input
-                  {...register('owner.role', { required: 'Owner role is required' })}
+                  {...register('owner_role', { required: 'Owner role is required' })}
                   className={inputClassName}
                   placeholder="e.g. Owner, Founder, CEO, Senior Advisor, etc."
                 />
-                {errors.owner?.role && (
-                  <p className="text-red-500 text-sm mt-1">{errors.owner.role.message}</p>
+                {errors.owner_role && (
+                  <p className="text-red-500 text-sm mt-1">{errors.owner_role.message}</p>
                 )}
               </div>
               <div>
-                <label className="block text-md font-medium mb-1">Email</label>
+                <label className="block text-md font-medium mb-1">Business Email</label>
                 <input
-                  {...register('email', {
+                  {...register('business_email', {
                     required: 'Email is required',
                     pattern: {
                       value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
@@ -301,15 +354,15 @@ export default function CreateListing() {
                   type="email"
                   className={inputClassName}
                 />
-                {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
+                {errors.business_email && (
+                  <p className="text-red-500 text-sm mt-1">{errors.business_email.message}</p>
                 )}
               </div>
 
               <div>
-                <label className="block text-md font-medium mb-1">Phone</label>
+                <label className="block text-md font-medium mb-1">Business Phone</label>
                 <Controller
-                  name="phone"
+                  name="business_phone"
                   control={control}
                   rules={{
                     required: 'Phone number is required',
@@ -330,8 +383,8 @@ export default function CreateListing() {
                     />
                   )}
                 />
-                {errors.phone && (
-                  <p className="text-red-500 text-sm mt-1">{errors.phone.message}</p>
+                {errors.business_phone && (
+                  <p className="text-red-500 text-sm mt-1">{errors.business_phone.message}</p>
                 )}
               </div>
               <div>
@@ -358,6 +411,66 @@ export default function CreateListing() {
             >
               Create Listing
             </button>
+            <dialog id='listing_submission_success' className="fixed inset-0 z-10 w-screen h-screen overflow-y-auto">
+              <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                  <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div className="bg-white relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                      <div className="sm:flex sm:items-start">
+                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                          <svg className="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                          </svg>
+                        </div>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Course Submitted Successfully</h3>
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">Your listing has been submitted successfully.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                          onClick={() => document.getElementById('listing_submission_success').close()}>
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </dialog>
+            <dialog id='listing_submission_error' className="fixed inset-0 z-10 w-screen h-screen overflow-y-auto">
+              <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+                <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                  <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+                    <div className="bg-white relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6">
+                      <div className="sm:flex sm:items-start">
+                        <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
+                          <svg className="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+                          </svg>
+                        </div>
+                        <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Error Submitting Course</h3>
+                          <div className="mt-2">
+                            <p className="text-sm text-gray-500">There was an error submitting your listing. Please try again.</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
+                        <button type="button" className="mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
+                          onClick={() => document.getElementById('listing_submission_error').close()}>
+                          Close
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </dialog>
           </form>
         </div>
       </section>
