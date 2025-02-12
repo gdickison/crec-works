@@ -5,7 +5,7 @@ import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
 import { useUser } from "@clerk/nextjs";
-import { uploadListingImage } from './actions';
+import { uploadListingImage, createListing } from './actions';
 import Loader from '@/components/Loader';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
@@ -149,8 +149,8 @@ export default function CreateListing() {
         imageFile: imageFile
       };
 
-      console.log('Form submitted:', formData);
-      // TODO: Add your API call here
+      const response = await createListing(formData);
+      console.log('response', response);
     } catch (error) {
       console.error('Error creating listing:', error);
     }
