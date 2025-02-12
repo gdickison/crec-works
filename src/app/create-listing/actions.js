@@ -43,7 +43,7 @@ export async function uploadListingImage(fileData) {
 }
 
 export async function createListing(request) {
-  console.log('request', request);
+
   try {
     const sql = neon(process.env.DATABASE_URL);
     const result = await sql`
