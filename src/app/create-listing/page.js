@@ -17,32 +17,33 @@ export default function CreateListing() {
   const [addressDetails, setAddressDetails] = useState(null);
   const selectId = 'service-categories';
   const { user, isLoaded } = useUser();
-  // console.log(user);
-  const GoogleApiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
   const router = useRouter();
 
   useEffect(() => {
-    const loadGoogleMapsScript = () => {
-      const script = document.createElement('script');
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${GoogleApiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initAutocomplete;
-      document.head.appendChild(script);
+    const waitForGoogle = () => {
+      if (window.google?.maps?.places && inputRef.current) {
+        // Google Maps is loaded and input exists
+        autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
+          types: ['address'],
+          componentRestrictions: { country: ['us'] }
+        });
+
+        autocompleteRef.current.addListener('place_changed', handlePlaceChange);
+      } else {
+        // Try again in 100ms
+        setTimeout(waitForGoogle, 100);
+      }
     };
 
-    const initAutocomplete = () => {
-      autocompleteRef.current = new window.google.maps.places.Autocomplete(inputRef.current, {
-        types: ['address'],
-        componentRestrictions: { country: ['us'] }
-      });
+    waitForGoogle();
 
-      autocompleteRef.current.addListener('place_changed', handlePlaceChange);
+    // Cleanup
+    return () => {
+      if (autocompleteRef.current) {
+        window.google?.maps?.event?.clearInstanceListeners(autocompleteRef.current);
+      }
     };
-
-    loadGoogleMapsScript();
-
-  }, [GoogleApiKey]);
+  }, []);
 
   const handlePlaceChange = () => {
     const place = autocompleteRef.current.getPlace();
@@ -315,8 +316,6 @@ export default function CreateListing() {
             <div className="space-y-4">
               <h2 className="text-xl font-semibold">Contact Information</h2>
               <div>
-              {console.log('isLoaded', isLoaded)}
-              {console.log('user', user)}
                 <label className="block text-md font-medium mb-1">Your Name</label>
                 <input
                   {...register('owner_name', { required: 'Owner name is required' })}
