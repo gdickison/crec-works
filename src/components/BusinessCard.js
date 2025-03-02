@@ -7,7 +7,7 @@ import Link from "next/link"
 
 
 export default function BusinessCard ({listing}) {
-
+  console.log('listing', listing)
   return (
     <div
       key={listing.id}
@@ -47,7 +47,9 @@ export default function BusinessCard ({listing}) {
             {listing.description}
           </p>
           <div className="flex flex-wrap gap-4">
-            <Location/>
+            <Location
+              location={listing.location}
+            />
             <Share/>
             <Like/>
           </div>
@@ -56,7 +58,7 @@ export default function BusinessCard ({listing}) {
       <div className="flex items-center justify-between gap-4 flex-col sm:flex-row p-2">
         <div>
           <p className="before:content-[&#x27;_&#x27;]"><span className="font-semibold">{listing.ownerName}</span> / {listing.ownerRole}</p>
-          <p className="before:content-[&#x27;_&#x27;]"><Link href={`mailto:${listing.email}`} className="text-gray-600 hover:text-blue-600">{listing.businessEmail}</Link> / <Link href={`tel:+${listing.businessPhone}`} className="text-gray-600 hover:text-blue-600">{listing.businessPhone}</Link></p>
+          <p className="before:content-[&#x27;_&#x27;]"><Link href={`mailto:${listing.businessEmail}`} target="_blank" className="text-gray-600 hover:text-blue-600">{listing.businessEmail} </Link> / <Link href={`tel:+${listing.businessPhone}`} target="_blank" className="text-gray-600 hover:text-blue-600">{listing.businessPhone}</Link></p>
         </div>
         <Link
           href={listing.websiteUrl}
