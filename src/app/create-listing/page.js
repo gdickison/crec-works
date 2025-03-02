@@ -127,6 +127,7 @@ export default function CreateListing() {
   };
 
   const onSubmit = async (data) => {
+
     try {
       // Handle avatar upload first if there is one
       let imageFile = data.imageFile || null
@@ -221,9 +222,23 @@ export default function CreateListing() {
               </div>
               <div>
                 <label className="block text-md font-medium mb-1">Website URL</label>
+                <p className="text-sm text-gray-500 mt-3">For best results copy and paste this from your browser.</p>
                 <input
-                  {...register('website_url', { required: 'URL slug is required' })}
+                  {...register('website_url', {
+                    required: 'URL slug is required',
+                    setValueAs: (value) => {
+                      if (!value) return value;
+                      // Remove any leading/trailing whitespace
+                      value = value.trim();
+                      // If URL doesn't start with http:// or https://, add https://
+                      if (!/^https?:\/\//i.test(value)) {
+                        return `https://${value}`;
+                      }
+                      return value;
+                    }
+                  })}
                   className={inputClassName}
+                  placeholder="https://example.com"
                 />
                 {errors.website_url && (
                   <p className="text-red-500 text-sm mt-1">{errors.website_url.message}</p>
