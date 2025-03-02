@@ -10,7 +10,6 @@ import { getData } from "./actions";
 
 export default async function Home() {
   const data = await getData();
-  console.log('data from Neon', data);
 
   return (
     <div>
@@ -84,6 +83,16 @@ export default async function Home() {
               </div>
             </div>
           </SignedIn>
+          <SignedOut>
+            <div className="flex flex-col gap-4">
+              <div className="">
+                <SearchBar/>
+              </div>
+              <div className="text-center">
+                <Link href="/sign-in" className="text-white text-center text-xl underline">Sign Up to See Current Listings</Link>
+              </div>
+            </div>
+          </SignedOut>
         </div>
       </div>
       <SignedIn>
