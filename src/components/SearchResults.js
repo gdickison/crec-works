@@ -3,7 +3,7 @@ import BusinessCard from "./BusinessCard";
 import { getListings } from "@/app/actions";
 
 export default async function SearchResults () {
-  // Fetch listings from the database
+
   const listings = await getListings();
 
   return (
