@@ -438,7 +438,7 @@ export default function CreateListing() {
                           </svg>
                         </div>
                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Course Submitted Successfully</h3>
+                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Listing Submitted Successfully</h3>
                           <div className="mt-2">
                             <p className="text-sm text-gray-500">Your listing has been submitted successfully.</p>
                           </div>
@@ -468,7 +468,7 @@ export default function CreateListing() {
                           </svg>
                         </div>
                         <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Error Submitting Course</h3>
+                          <h3 className="text-base font-semibold leading-6 text-gray-900" id="modal-title">Error Submitting Listing</h3>
                           <div className="mt-2">
                             <p className="text-sm text-gray-500">There was an error submitting your listing. Please try again.</p>
                           </div>
