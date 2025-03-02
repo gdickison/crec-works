@@ -2,6 +2,8 @@
 import BusinessCard from "./BusinessCard";
 import { getListings } from "@/app/actions";
 
+export const revalidate = 0;
+
 export default async function SearchResults () {
 
   const listings = await getListings();
