@@ -80,7 +80,7 @@ export default async function Home() {
                 <SearchBar/>
               </div>
               <div className="text-center">
-                <Link href={`/search-results`} className="text-white text-center text-xl underline">See sample search results</Link>
+                <Link href={`/search-results`} className="text-white text-center text-xl underline">See current listings</Link>
               </div>
             </div>
           </SignedIn>

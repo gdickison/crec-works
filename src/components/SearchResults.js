@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
-import { listings } from "@/utils/localdata"
 import BusinessCard from "./BusinessCard";
+import { getListings } from "@/app/actions";
 
 export default async function SearchResults () {
+
+  const listings = await getListings();
 
   return (
     <section className="relative pt-24">
@@ -50,14 +52,14 @@ export default async function SearchResults () {
         </div>
       </div>
       <div className="grid w-full auto-cols-fr grid-cols-1 gap-6 lg:grid-cols-2 m-4 max-w-7xl mx-auto">
-      {listings && listings.map(listing => {
-        return (
-          <BusinessCard
-            key={listing.id}
-            listing={listing}
-          />
-        )
-      })}
+        {listings && listings.map(listing => {
+          return (
+            <BusinessCard
+              key={listing.id}
+              listing={listing}
+            />
+          )
+        })}
       </div>
     </section>
   )
