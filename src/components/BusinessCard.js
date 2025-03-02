@@ -7,7 +7,7 @@ import Link from "next/link"
 
 
 export default function BusinessCard ({listing}) {
-
+  console.log('listing', listing)
   return (
     <div
       key={listing.id}
@@ -47,7 +47,9 @@ export default function BusinessCard ({listing}) {
             {listing.description}
           </p>
           <div className="flex flex-wrap gap-4">
-            <Location/>
+            <Location
+              location={listing.location}
+            />
             <Share/>
             <Like/>
           </div>
