@@ -9,8 +9,6 @@ export default function Like () {
     setLiked(liked => !liked)
   }
 
-  console.log('liked', liked)
-
   return (
     <div className={`flex items-center gap-2 p-2 hover:cursor-pointer hover:text-blue-500 ${liked ? 'text-blue-500' : 'text-black'}`} onClick={handleClick}>
       {liked ?

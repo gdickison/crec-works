@@ -15,7 +15,7 @@ export default async function SignUpPage () {
 
     await account.create(ID.unique(), email, password, name);
     const session = await account.createEmailPasswordSession(email, password);
-    console.log('session', session);
+
     cookies().set("session", session.secret, {
       path: "/",
       httpOnly: true,

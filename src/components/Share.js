@@ -8,8 +8,6 @@ export default function Share () {
     setShare(share => !share)
   }
 
-  console.log('share', share)
-
   return (
     <div className="flex items-center gap-2 hover:cursor-pointer hover:text-blue-500" onClick={handleClick} >
       <svg

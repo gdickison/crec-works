@@ -10,7 +10,6 @@ import { getData } from "./actions";
 
 export default async function Home() {
   const data = await getData();
-  console.log('data from Neon', data);
 
   return (
     <div>

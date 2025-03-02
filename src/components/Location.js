@@ -8,7 +8,6 @@ export default function Location () {
     setShowMap(showMap => !showMap)
   }
 
-  console.log('showMap', showMap)
   return (
     <div className="flex items-center gap-2 hover:cursor-pointer hover:text-blue-500" onClick={handleClick}>
       <svg

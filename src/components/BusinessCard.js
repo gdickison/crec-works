@@ -7,7 +7,7 @@ import Link from "next/link"
 
 
 export default function BusinessCard ({listing}) {
-  console.log('listing', listing);
+
   return (
     <div
       key={listing.id}
