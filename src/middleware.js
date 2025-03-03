@@ -1,9 +1,45 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from 'next/server'
 
-const isProtectedRoute = createRouteMatcher(['/create-listing']);
+const isOnboardingRoute = createRouteMatcher(['/onboarding'])
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in(.*)',
+  '/sign-up(.*)',
+  '/sso-callback(.*)'
+]) // Add auth-related routes as public
+const isProtectedRoute = createRouteMatcher(['/create-listing'])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (isProtectedRoute(req)) await auth.protect()
+  const { userId, sessionClaims, redirectToSignIn } = await auth()
+
+  // For users visiting /onboarding, don't try to redirect
+  if (userId && isOnboardingRoute(req)) {
+    return NextResponse.next()
+  }
+
+  // If the user isn't signed in and the route isn't public, redirect to sign-in
+  if (!userId && !isPublicRoute(req)) {
+    return redirectToSignIn({ returnBackUrl: req.url })
+  }
+
+  // Catch users who do not have `onboardingComplete: true` in their publicMetadata
+  // Redirect them to the /onboarding route to complete onboarding
+  if (userId && !sessionClaims?.metadata?.onboardingComplete && !isOnboardingRoute(req)) {
+    const onboardingUrl = new URL('/onboarding', req.url)
+    return NextResponse.redirect(onboardingUrl)
+  }
+
+  // Extra protection for specific routes that require both auth and completed onboarding
+  if (isProtectedRoute(req)) {
+    if (!userId) return redirectToSignIn({ returnBackUrl: req.url })
+    if (!sessionClaims?.metadata?.onboardingComplete) {
+      const onboardingUrl = new URL('/onboarding', req.url)
+      return NextResponse.redirect(onboardingUrl)
+    }
+  }
+
+  return NextResponse.next()
 })
 
 export const config = {
