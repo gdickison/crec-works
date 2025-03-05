@@ -100,3 +100,66 @@ export const getChurches = async () => {
     throw new Error('Failed to fetch churches');
   }
 }
+
+export async function toggleBookmark(userId, listingId) {
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+
+    // Check if bookmark exists
+    const existingBookmark = await sql`
+      SELECT * FROM bookmarks
+      WHERE user_id = ${userId} AND listing_id = ${listingId}
+    `;
+
+    if (existingBookmark.length > 0) {
+      // Remove bookmark
+      await sql`
+        DELETE FROM bookmarks
+        WHERE user_id = ${userId} AND listing_id = ${listingId}
+      `;
+      return { message: 'Bookmark removed' };
+    } else {
+      // Add bookmark
+      await sql`
+        INSERT INTO bookmarks (user_id, listing_id)
+        VALUES (${userId}, ${listingId})
+      `;
+      return { message: 'Bookmark added' };
+    }
+  } catch (error) {
+    console.error('Error toggling bookmark:', error);
+    return { error: 'Failed to update bookmark' };
+  }
+}
+
+export async function getBookmarks(userId) {
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    const result = await sql`
+      SELECT listing_id
+      FROM bookmarks
+      WHERE user_id = ${userId}
+    `;
+    return result.map(row => row.listing_id);
+  } catch (error) {
+    console.error('Error getting bookmarks:', error);
+    return [];
+  }
+}
+
+export async function isBookmarked(userId, listingId) {
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    const result = await sql`
+      SELECT EXISTS(
+        SELECT 1
+        FROM bookmarks
+        WHERE user_id = ${userId} AND listing_id = ${listingId}
+      ) as exists
+    `;
+    return result[0].exists;
+  } catch (error) {
+    console.error('Error checking bookmark:', error);
+    return false;
+  }
+}
