@@ -182,8 +182,8 @@ export async function getBookmarkedListings(userId) {
         l.website_url,
         b.created_at as bookmarked_at
       FROM bookmarks b
-      JOIN listings l ON b.listing_id = l.id
-      WHERE b.user_id = ${userId}
+      JOIN listings l ON b.listing_id::uuid = l.id
+      WHERE CAST(b.user_id AS text) = CAST(${userId} AS text)
       ORDER BY b.created_at DESC;
     `;
 
