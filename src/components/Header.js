@@ -38,7 +38,9 @@ export default async function Header () {
           style={{height: "var(--height-closed, 0)"}}
         >
           <SignedIn>
-            <div className="first:pt-4 lg:first:pt-0">
+            <div className="flex flex-row gap-4 first:pt-4 lg:first:pt-0 items-center">
+              <Link href="/search-results">All Listings</Link>
+              <Link href="/bookmarks">My Saved Listings</Link>
               <p className="py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.firstName}</p>
             </div>
           </SignedIn>
