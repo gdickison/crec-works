@@ -163,3 +163,46 @@ export async function isBookmarked(userId, listingId) {
     return false;
   }
 }
+
+export async function getBookmarkedListings(userId) {
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    const result = await sql`
+      SELECT
+        l.id,
+        l.business_email,
+        l.business_name,
+        l.business_phone,
+        l.categories,
+        l.description,
+        l.image_file,
+        l.location,
+        l.owner_name,
+        l.owner_role,
+        l.website_url,
+        b.created_at as bookmarked_at
+      FROM bookmarks b
+      JOIN listings l ON b.listing_id = l.id
+      WHERE b.user_id = ${userId}
+      ORDER BY b.created_at DESC;
+    `;
+
+    return result.map(listing => ({
+      id: listing.id,
+      businessEmail: listing.business_email,
+      businessName: listing.business_name,
+      businessPhone: listing.business_phone,
+      categories: listing.categories,
+      description: listing.description,
+      imageFile: listing.image_file,
+      location: listing.location,
+      ownerName: listing.owner_name,
+      ownerRole: listing.owner_role,
+      websiteUrl: listing.website_url,
+      bookmarkedAt: listing.bookmarked_at
+    }));
+  } catch (error) {
+    console.error('Error fetching bookmarked listings:', error);
+    return [];
+  }
+}
