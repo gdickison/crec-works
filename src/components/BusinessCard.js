@@ -7,7 +7,7 @@ import Link from "next/link"
 
 
 export default function BusinessCard ({listing}) {
-  console.log('listing', listing)
+
   return (
     <div
       key={listing.id}
@@ -27,7 +27,9 @@ export default function BusinessCard ({listing}) {
             )
           })}
         </div>
-        <Bookmark/>
+        <Bookmark
+          listingId={listing.id}
+        />
       </div>
       <div className="flex flex-col sm:flex-row gap-4 px-0 sm:px-2">
         <div className="w-full sm:w-72 md:w-60 h-full sm:h-72 md:h-60">
