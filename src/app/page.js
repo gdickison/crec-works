@@ -75,21 +75,21 @@ export default async function Home() {
           </div>
           <SignedIn>
             <div className="flex flex-col gap-4">
-              <div className="">
+              <div className="hidden">
                 <SearchBar/>
               </div>
               <div className="text-center">
-                <Link href={`/search-results`} className="text-white text-center text-xl underline">See current listings</Link>
+                <Link href={`/search-results`} className="text-white text-center text-3xl underline">See current listings</Link>
               </div>
             </div>
           </SignedIn>
           <SignedOut>
             <div className="flex flex-col gap-4">
-              <div className="">
+              <div className="hidden">
                 <SearchBar/>
               </div>
               <div className="text-center">
-                <Link href="/sign-in" className="text-white text-center text-xl underline">Sign Up to See Current Listings</Link>
+                <Link href="/sign-in" className="text-white text-center text-3xl underline">Sign Up to See Current Listings</Link>
               </div>
             </div>
           </SignedOut>

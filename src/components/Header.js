@@ -1,21 +1,20 @@
+'use client'
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
-import { auth, clerkClient } from "@clerk/nextjs/server";
+import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 
-export default async function Header () {
+export default function Header() {
+  const { user } = useUser();
+  const pathname = usePathname();
 
-  const { userId } = await auth();
-  let user;
+  // Hide navigation links on sign-in page
+  const showNav = !pathname?.includes('/sign-in');
+  const showBackground = !pathname?.includes('/sign-in');
 
-  if (userId) {
-    const client = await clerkClient();
-    user = await client.users.getUser(userId);
-  }
-
-  return <div className="absolute top-0 left-0 w-full z-10 bg-gray-600/50">
+  return <div className={`absolute top-0 left-0 w-full z-10 ${showBackground ? 'bg-gray-600/50' : ''}`}>
     <nav
-      className="flex w-full items-center border-b border-border-primary bg-background-primary lg:min-h-18 lg:px-[5%] py-2"
+      className={`flex w-full items-center ${showBackground ? 'border-b border-border-primary' : ''} bg-background-primary lg:min-h-18 lg:px-[5%] py-2`}
     >
       <div className="size-full lg:flex lg:items-center lg:justify-between">
         <div
@@ -33,56 +32,58 @@ export default async function Header () {
             <span className="my-[3px] h-0.5 w-6 bg-black" style={{willChange: "transform"}}></span>
           </button>
         </div>
-        <div
-          className="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
-          style={{height: "var(--height-closed, 0)"}}
-        >
-          <SignedIn>
-            <div className="flex flex-row gap-4 first:pt-4 lg:first:pt-0 items-center">
-              <Link href="/search-results">All Listings</Link>
-              <Link href="/bookmarks">My Saved Listings</Link>
-              <p className="py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.firstName}</p>
-            </div>
-          </SignedIn>
-          <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
+        {showNav && (
+          <div
+            className="overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto]"
+            style={{height: "var(--height-closed, 0)"}}
+          >
             <SignedIn>
-              <UserButton />
+              <div className="flex flex-row gap-4 first:pt-4 lg:first:pt-0 items-center">
+                <Link href="/search-results">All Listings</Link>
+                <Link href="/bookmarks">My Saved Listings</Link>
+                <p className="py-3 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.firstName}</p>
+              </div>
             </SignedIn>
-            <SignedOut>
-            <Link
-                href="/sign-in"
-                title=""
-                className="
-                  inline-flex
-                  items-center
-                  justify-center
-                  px-5
-                  py-2
-                  font-sans
-                  text-base
-                  font-semibold
-                  transition-all
-                  duration-200
-                  bg-transparent
-                  border-2
-                  rounded-full
-                  sm:leading-8
-                  text-white
-                  border-primary
-                  hover:bg-white
-                  focus:outline-none
-                  hover:text-black
-                  sm:text-lg
-                  focus:ring-offset-secondary
-                "
-                role="button"
-              >
-                Sign In
-              </Link>
-            </SignedOut>
+            <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <SignedOut>
+                <Link
+                  href="/sign-in"
+                  title=""
+                  className="
+                    inline-flex
+                    items-center
+                    justify-center
+                    px-5
+                    py-2
+                    font-sans
+                    text-base
+                    font-semibold
+                    transition-all
+                    duration-200
+                    bg-transparent
+                    border-2
+                    rounded-full
+                    sm:leading-8
+                    text-white
+                    border-primary
+                    hover:bg-white
+                    focus:outline-none
+                    hover:text-black
+                    sm:text-lg
+                    focus:ring-offset-secondary
+                  "
+                  role="button"
+                >
+                  Sign In
+                </Link>
+              </SignedOut>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </nav>
   </div>;
-};
+}
