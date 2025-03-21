@@ -95,12 +95,12 @@ export default async function Home() {
           </SignedOut>
         </div>
       </div>
-      <SignedIn>
+      {/* <SignedIn>
         <div>
           <Categories/>
         </div>
       </SignedIn>
-      <Pricing/>
+      <Pricing/> */}
     </div>
   );
 }
