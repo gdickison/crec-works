@@ -57,7 +57,7 @@ export const completeOnboarding = async (data) => {
   const { userId } = await auth()
 
   if (!userId) {
-    return { message: 'No Logged In User' }
+    return { error: 'No Logged In User' }
   }
 
   const client = await clerkClient()
@@ -74,8 +74,14 @@ export const completeOnboarding = async (data) => {
         churchState: data.churchState,
       },
     })
-    return { message: res.publicMetadata }
+
+    // Return success with the updated metadata
+    return {
+      message: 'Onboarding completed successfully',
+      metadata: res.publicMetadata
+    }
   } catch (err) {
+    console.error('Error in completeOnboarding:', err);
     return { error: 'There was an error updating the user metadata.' }
   }
 }
