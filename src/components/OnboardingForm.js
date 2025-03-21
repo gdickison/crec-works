@@ -9,7 +9,7 @@ export default function OnboardingForm({ churches }) {
   const [error, setError] = React.useState('')
   const { user } = useUser()
   const router = useRouter()
-
+console.log('user', user)
   const handleSubmit = async (formData) => {
     const churchValue = formData.get('church')
     const [churchName, churchId, churchCity, churchState] = churchValue.split('|')
@@ -24,6 +24,7 @@ export default function OnboardingForm({ churches }) {
     }
 
     const res = await completeOnboarding(data)
+    console.log('res', res)
     if (res?.message) {
       // Reloads the user's data from the Clerk API
       await user?.reload()
@@ -33,7 +34,7 @@ export default function OnboardingForm({ churches }) {
       setError(res?.error)
     }
   }
-console.log('churches', churches)
+// console.log('churches', churches)
   return (
     <form action={handleSubmit} className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="grid md:grid-cols-2 gap-6">
