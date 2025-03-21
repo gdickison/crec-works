@@ -30,6 +30,7 @@ console.log('user 1', user)
       console.log('user 2', user)
       console.log('user 3', await user?.reload())
       await user?.reload()
+      console.log('router', router.push('/'))
       router.push('/')
     }
     if (res?.error) {
