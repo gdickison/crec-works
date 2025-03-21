@@ -29,8 +29,10 @@ export default function OnboardingForm({ churches, href }) {
     if (res?.message) {
       // Reloads the user's data from the Clerk API
       console.log('before reload')
+      console.log('user', user)
       await user?.reload()
       console.log('after reload')
+      console.log('user', user)
       console.log("before refresh")
       router.refresh()
       console.log("after refresh")
