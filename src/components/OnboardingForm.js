@@ -28,6 +28,7 @@ console.log('user 1', user)
     if (res?.message) {
       // Reloads the user's data from the Clerk API
       console.log('user 2', user)
+      console.log('user 3', await user?.reload())
       await user?.reload()
       router.push('/')
     }
