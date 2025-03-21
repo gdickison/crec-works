@@ -24,6 +24,7 @@ export default function OnboardingForm({ churches }) {
     }
 
     const res = await completeOnboarding(data)
+    console.log('res', res)
     if (res?.message) {
       // Reloads the user's data from the Clerk API
       await user?.reload()
