@@ -74,6 +74,7 @@ export const completeOnboarding = async (data) => {
         churchState: data.churchState,
       },
     })
+    console.log('response from action', res)
     return { message: res.publicMetadata }
   } catch (err) {
     return { error: 'There was an error updating the user metadata.' }
