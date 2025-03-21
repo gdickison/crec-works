@@ -16,10 +16,13 @@ function Location ({location}) {
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY
   })
 
-  const center = useMemo(() => ({
-    lat: location.latitude,
-    lng: location.longitude
-  }), [location.latitude, location.longitude]);
+  const center = useMemo(() => {
+    if (!location) return null;
+    return {
+      lat: location.latitude,
+      lng: location.longitude
+    };
+  }, [location]);
 
   const onLoad = useCallback(function callback(map) {
     setMap(map)
@@ -28,6 +31,11 @@ function Location ({location}) {
   const onUnmount = useCallback(function callback(map) {
     setMap(null)
   }, [])
+
+  // Return null if location is not provided
+  if (!location || !center) {
+    return null;
+  }
 
   function handleClick (e) {
     e.preventDefault()
