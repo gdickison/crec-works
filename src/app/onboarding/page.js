@@ -12,7 +12,7 @@ export default async function OnboardingPage() {
         </div>
         <div>
           <p className="mt-4 text-gray-600">To create an account you must be a member in good standing of a CREC church. Please enter your name and contact information, and select your church from the list below.</p>
-          <OnboardingForm churches={churches} />
+          <OnboardingForm churches={churches} href={'/'} />
         </div>
       </div>
     </section>
