@@ -74,7 +74,7 @@ export const completeOnboarding = async (data) => {
         churchState: data.churchState,
       },
     })
-
+    console.log('response from action', res)
     // Return success with the updated metadata
     return {
       message: 'Onboarding completed successfully',
