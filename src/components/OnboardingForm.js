@@ -2,13 +2,11 @@
 
 import * as React from 'react'
 import { useUser } from '@clerk/nextjs'
-// import { useRouter } from 'next/navigation'
 import { completeOnboarding } from '@/app/actions'
 
 export default function OnboardingForm({ churches, href }) {
   const [error, setError] = React.useState('')
   const { user } = useUser()
-  // const router = useRouter()
 
   const handleSubmit = async (formData) => {
     const churchValue = formData.get('church')
@@ -24,22 +22,17 @@ export default function OnboardingForm({ churches, href }) {
     }
 
     const res = await completeOnboarding(data)
-    console.log('res', res)
-    console.log(res?.message)
+
     if (res?.message) {
       // Reloads the user's data from the Clerk API
-      console.log('before reload')
-      console.log('user', user)
       await user?.reload()
-      console.log('after reload')
-      console.log('user', user)
       window.location.href = href
     }
     if (res?.error) {
       setError(res?.error)
     }
   }
-// console.log('churches', churches)
+
   return (
     <form action={handleSubmit} className="max-w-2xl mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="grid md:grid-cols-2 gap-6">
