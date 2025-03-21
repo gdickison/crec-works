@@ -10,7 +10,7 @@ export default async function SearchResults () {
 
   return (
     <section className="relative pt-24">
-      <div
+      {/* <div
         className="flex flex-col sm:flex-row w-full max-w-7xl mx-auto px-4 justify-between"
       >
         <div className="flex items-center">
@@ -52,7 +52,7 @@ export default async function SearchResults () {
             <option value="liked">Liked</option>
           </select>
         </div>
-      </div>
+      </div> */}
       <div className="grid w-full auto-cols-fr grid-cols-1 gap-6 lg:grid-cols-2 m-4 max-w-7xl mx-auto">
         {listings && listings.map(listing => {
           return (
