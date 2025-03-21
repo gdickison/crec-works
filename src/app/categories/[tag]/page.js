@@ -4,10 +4,9 @@ import BusinessCard from "@/components/BusinessCard"
 export default async function CategoryPage({params}) {
   const {tag} = params
   const listings = await getListingsByCategory(tag)
-  console.log('listings', listings)
 
   return (
-    <section className="pt-24">
+    <section className="">
       <div className="flex flex-col sm:flex-row w-full max-w-7xl mx-auto px-4 justify-between">
         <h1 className="text-4xl font-bold">{tag.charAt(0).toUpperCase() + tag.slice(1)}</h1>
       </div>
