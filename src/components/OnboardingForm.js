@@ -5,7 +5,7 @@ import { useUser } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { completeOnboarding } from '@/app/actions'
 
-export default function OnboardingForm({ churches }) {
+export default function OnboardingForm({ churches, href }) {
   const [error, setError] = React.useState('')
   const { user } = useUser()
   const router = useRouter()
@@ -28,7 +28,7 @@ export default function OnboardingForm({ churches }) {
     if (res?.message) {
       // Reloads the user's data from the Clerk API
       await user?.reload()
-      router.push('/')
+      router.push(href)
     }
     if (res?.error) {
       setError(res?.error)
