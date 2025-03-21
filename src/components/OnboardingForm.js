@@ -2,13 +2,13 @@
 
 import * as React from 'react'
 import { useUser } from '@clerk/nextjs'
-import { useRouter } from 'next/navigation'
+// import { useRouter } from 'next/navigation'
 import { completeOnboarding } from '@/app/actions'
 
 export default function OnboardingForm({ churches, href }) {
   const [error, setError] = React.useState('')
   const { user } = useUser()
-  const router = useRouter()
+  // const router = useRouter()
 
   const handleSubmit = async (formData) => {
     const churchValue = formData.get('church')
@@ -33,12 +33,7 @@ export default function OnboardingForm({ churches, href }) {
       await user?.reload()
       console.log('after reload')
       console.log('user', user)
-      console.log("before refresh")
-      router.refresh()
-      console.log("after refresh")
-      console.log("before push")
-      router.push('/')
-      console.log("after push")
+      window.location.href = href
     }
     if (res?.error) {
       setError(res?.error)
