@@ -36,6 +36,7 @@ const categoryOptions = [
   { value: 'medical-equipment', label: 'Medical Equipment', href: '/categories/medical-equipment' },
   { value: 'medical-insurance', label: 'Medical Insurance', href: '/categories/medical-insurance' },
   { value: 'medical-coding', label: 'Medical Coding', href: '/categories/medical-coding' },
+  { value: 'news', label: 'News', href: '/categories/news' },
   { value: 'non-profit', label: 'Non-Profit', href: '/categories/non-profit' },
   { value: 'personal-finance', label: 'Personal Finance', href: '/categories/personal-finance' },
   { value: 'plumbing', label: 'Plumbing', href: '/categories/plumbing' },
