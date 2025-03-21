@@ -12,7 +12,7 @@ export default function CategoryLayout({ children, params }) {
             <Link
               key={option.value}
               href={option.href}
-              className={`px-4 py-2 rounded-md ${
+              className={`px-4 py-2 rounded-md text-xs ${
                 option.value === tag
                   ? 'bg-blue-600 text-white'
                   : 'bg-gray-100 hover:bg-gray-200'

@@ -7,9 +7,6 @@ export default async function CategoryPage({params}) {
 
   return (
     <section className="">
-      <div className="flex flex-col sm:flex-row w-full max-w-7xl mx-auto px-4 justify-between">
-        <h1 className="text-4xl font-bold">{tag.charAt(0).toUpperCase() + tag.slice(1)}</h1>
-      </div>
       <div className="grid w-full auto-cols-fr grid-cols-1 gap-6 lg:grid-cols-2 m-4 max-w-7xl mx-auto">
         {listings && listings.map(listing => {
           return (
