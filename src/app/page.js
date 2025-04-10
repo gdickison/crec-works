@@ -7,7 +7,6 @@ import Pricing from "@/components/Pricing";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { getData } from "./actions";
-
 export default async function Home() {
   const data = await getData();
 

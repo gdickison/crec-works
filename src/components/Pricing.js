@@ -26,13 +26,13 @@ const tiers = [
     price: { monthly: '$2', annually: '$20' },
     description: 'Advertise to your physical service region.',
     features: [
-      'All churches in region',
+      'All CREC churches in region',
       'Full business listing',
       'Full keyword search',
       'Public search option',
-      'Search analytics'
+      'Search analytics (coming soon)'
     ],
-    mostPopular: true,
+    mostPopular: false,
     action: 'Buy'
   },
   {
@@ -46,7 +46,7 @@ const tiers = [
       'Full business listing',
       'Full keyword search',
       'Public search option',
-      'Search analytics'
+      'Search analytics (coming soon)'
     ],
     mostPopular: false,
     action: 'Buy'
@@ -148,22 +148,23 @@ export default function Pricing() {
             </div>
           ))}
         </div>
-        <section id="relume" className="px-[5%] py-12">
-          <div className="container text-center">
+        <section id="relume" className="hidden lg:block px-[5%] py-12">
+          <div className="container text-center relative border-2 border-indigo-600/10">
+            <h1 className="absolute top-10 left-48 w-56 bg-indigo-600/10 -rotate-45 z-10 font-bold text-2xl text-indigo-600 rounded-md">Coming soon</h1>
             <h2 className="rb-5 mb-5 text-5xl font-semibold md:mb-6">
               For Churches
             </h2>
             <p className="md:text-xl">
               Get a branded directory for your congregation.
             </p>
-            <div className="mt-6 flex items-center justify-center gap-4 md:mt-8">
+            {/* <div className="mt-6 flex items-center justify-center gap-4 md:mt-8">
               <button
                 className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary text-text-primary bg-background-primary px-6 py-3 bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 rounded-lg w-96"
                 title="Button"
               >
                 Get Started
               </button>
-            </div>
+            </div> */}
           </div>
         </section>
       </div>
