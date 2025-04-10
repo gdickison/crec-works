@@ -99,8 +99,8 @@ export default async function Home() {
         <div>
           <Categories/>
         </div>
-      </SignedIn>
-      <Pricing/> */}
+      </SignedIn> */}
+      <Pricing/>
     </div>
   );
 }
