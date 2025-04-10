@@ -7,6 +7,7 @@ export const revalidate = 0;
 export default async function SearchResults () {
 
   const listings = await getListings();
+  console.log(listings.length);
 
   return (
     <section className="relative pt-24">
