@@ -1,7 +1,13 @@
 import {categoryOptions} from "@/utils/listingOptions"
 import Link from "next/link"
 
-export default function CategoryLayout({ children, params }) {
+export default async function CategoryLayout(props) {
+  const params = await props.params;
+
+  const {
+    children
+  } = props;
+
   const { tag } = params
 
   return (
