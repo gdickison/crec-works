@@ -11,7 +11,11 @@ export async function getData() {
 
 export async function getListings() {
   try {
-    const sql = neon(process.env.DATABASE_URL);
+    const sql = neon(process.env.DATABASE_URL, {
+      fetchOptions: {
+        cache: 'no-store'
+      }
+    });
 
     const result = await sql`
       SELECT
