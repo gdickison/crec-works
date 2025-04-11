@@ -39,7 +39,7 @@ export default async function Home() {
                 <p className="font-sans text-xl font-normal text-white flex flex-col sm:flex-row sm:gap-2 items-center justify-center"><span>List from $0 to $5.00/month. </span><span>Search for free.</span></p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
                   <Link
-                    href="/create-listing"
+                    href="/pricing"
                     title=""
                     className="
                       inline-flex

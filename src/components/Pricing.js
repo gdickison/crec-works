@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const frequencies = [
   { value: 'monthly', label: 'Monthly', priceSuffix: '/month' },
@@ -59,6 +60,11 @@ function classNames(...classes) {
 
 export default function Pricing() {
   const [frequency, setFrequency] = useState(frequencies[0])
+  const router = useRouter()
+
+  const handlePlanSelect = (tier) => {
+    router.push(`/create-listing?plan=${tier.id}&frequency=${frequency.value}`)
+  }
 
   return (
     <div className="bg-white py-12">
@@ -125,18 +131,17 @@ export default function Pricing() {
                 <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value]}</span>
                 <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
               </p>
-              <Link
-                href={tier.href}
-                aria-describedby={tier.id}
+              <button
+                onClick={() => handlePlanSelect(tier)}
                 className={classNames(
                   tier.mostPopular
                     ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500'
                     : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300',
-                  'mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                  'mt-6 block w-full rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                 )}
               >
                 {tier.action} plan
-              </Link>
+              </button>
               <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">
