@@ -13,18 +13,29 @@ const tiers = [
   {
     name: 'Congregational',
     id: 'tier-congregational',
-    href: '#',
     price: { monthly: '$0', annually: '$0' },
     description: 'Advertise to your local congregation.',
-    features: ['Your local church', 'Full business listing', 'Full keyword search'],
+    features: [
+      'Your local church',
+      'Full business listing',
+      'Full keyword search'
+    ],
     mostPopular: false,
     action: 'Get'
   },
   {
     name: 'Regional',
     id: 'tier-regional',
-    href: '#',
-    price: { monthly: '$2', annually: '$20' },
+    price: {
+      monthly: {
+        amount: '$2',
+        link: 'https://buy.stripe.com/8wM16u1T63rIb0Q5kn'
+      },
+      annually: {
+        amount: '$20',
+        link: 'https://buy.stripe.com/6oEbL8eFSe6m9WMeUW'
+      }
+    },
     description: 'Advertise to your physical service region.',
     features: [
       'All CREC churches in region',
@@ -39,8 +50,16 @@ const tiers = [
   {
     name: 'National',
     id: 'tier-national',
-    href: '#',
-    price: { monthly: '$5', annually: '$50' },
+    price: {
+      monthly: {
+        amount: '$5',
+        link: 'https://buy.stripe.com/9AQ8yW69maUa5Gw289'
+      },
+      annually: {
+        amount: '$50',
+        link: 'https://buy.stripe.com/14k7uSbtG3rI4Cs3cc'
+      }
+    },
     description: 'Perfect for remote businesses.',
     features: [
       'All CREC churches',
@@ -63,7 +82,14 @@ export default function Pricing() {
   const router = useRouter()
 
   const handlePlanSelect = (tier) => {
-    router.push(`/create-listing?plan=${tier.id}&frequency=${frequency.value}`)
+    if (tier.id === 'tier-congregational') {
+      // Free plan - go directly to listing form
+      router.push(`/create-listing?plan=${tier.id}&frequency=${frequency.value}`)
+      return
+    }
+
+    // For paid plans, open the Stripe payment link in a new tab
+    window.open(tier.price[frequency.value].link, '_blank')
   }
 
   return (
@@ -128,7 +154,7 @@ export default function Pricing() {
               </div>
               <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>
               <p className="mt-6 flex items-baseline gap-x-1">
-                <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value]}</span>
+                <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value].amount}</span>
                 <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
               </p>
               <button
