@@ -2,7 +2,7 @@ import { createSessionClient } from "@/app/appwrite/config";
 import { cookies } from "next/headers";
 
 export async function GET(req) {
-  const sessionCookie = cookies().get("session");
+  const sessionCookie = (await cookies()).get("session");
 
   try {
     const { databases } = await createSessionClient(sessionCookie.value);

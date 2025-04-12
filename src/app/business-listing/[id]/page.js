@@ -1,7 +1,10 @@
 import React from 'react'
 import Reviews1 from '@/components/Reviews1'
 
-function TestPage({params, searchParams}) {
+async function TestPage(props) {
+  const searchParams = await props.searchParams;
+  const params = await props.params;
+
   return (
     <div>
       <h1>{searchParams.name}</h1>

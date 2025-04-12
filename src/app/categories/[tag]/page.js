@@ -1,7 +1,8 @@
 import { getListingsByCategory } from "@/app/actions"
 import BusinessCard from "@/components/BusinessCard"
 
-export default async function CategoryPage({params}) {
+export default async function CategoryPage(props) {
+  const params = await props.params;
   const {tag} = params
   const listings = await getListingsByCategory(tag)
 

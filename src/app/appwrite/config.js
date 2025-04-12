@@ -6,7 +6,7 @@ export async function createSessionClient () {
     .setEndpoint(process.env.NEXT_PUBLIC_APPWRITE_API_ENDPOINT)
     .setProject(process.env.NEXT_PUBLIC_APPWRITE_PROJECT_ID);
 
-  const session = cookies().get('session');
+  const session = (await cookies()).get('session');
 
   if (!session || !session.value) {
     throw new Error('No session found');
