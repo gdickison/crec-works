@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 
 const frequencies = [
@@ -13,7 +12,16 @@ const tiers = [
   {
     name: 'Congregational',
     id: 'tier-congregational',
-    price: { monthly: '$0', annually: '$0' },
+    price: {
+      monthly: {
+        amount: '$0',
+        link: '/create-listing'
+      },
+      annually: {
+        amount: '$0',
+        link: '/create-listing'
+      }
+    },
     description: 'Advertise to your local congregation.',
     features: [
       'Your local church',
