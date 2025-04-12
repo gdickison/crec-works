@@ -15,11 +15,11 @@ const tiers = [
     price: {
       monthly: {
         amount: '$0',
-        link: '/create-listing'
+        link: '/create-listing/congregational'
       },
       annually: {
         amount: '$0',
-        link: '/create-listing'
+        link: '/create-listing/congregational'
       }
     },
     description: 'Advertise to your local congregation.',

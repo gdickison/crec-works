@@ -50,7 +50,7 @@ export default function CreateListing({ params }) {
   useEffect(() => {
     const getLineItems = async () => {
       const sessionId = params.id;
-      if (!sessionId) return;
+      if (!sessionId || sessionId === 'congregational') return;
 
       setIsLoading(true);
       try {
