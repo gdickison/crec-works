@@ -3,7 +3,7 @@ import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_SANDBOX_KEY);
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function uploadListingImage(fileData) {
   const storageZoneName = process.env.BUNNY_STORAGE_ZONE_NAME
