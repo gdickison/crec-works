@@ -5,19 +5,20 @@ import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
 import { useUser } from "@clerk/nextjs";
-import { uploadListingImage, createListing } from './actions';
+import { uploadListingImage, createListing, getCheckoutSessionLineItems } from './actions';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
-export default function CreateListing() {
+export default function CreateListing({ params }) {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [addressDetails, setAddressDetails] = useState(null);
   const selectId = 'service-categories';
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const waitForGoogle = () => {
@@ -44,6 +45,29 @@ export default function CreateListing() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const getLineItems = async () => {
+      const sessionId = params.id;
+      if (!sessionId) return;
+
+      setIsLoading(true);
+      try {
+        const { lineItems, error } = await getCheckoutSessionLineItems(sessionId);
+        if (error) {
+          console.error('Error retrieving line items:', error);
+          return;
+        }
+        console.log('Line items:', lineItems);
+      } catch (error) {
+        console.error('Error retrieving line items:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getLineItems();
+  }, [params.id]);
 
   const handlePlaceChange = () => {
     const place = autocompleteRef.current.getPlace();

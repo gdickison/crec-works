@@ -1,6 +1,9 @@
 'use server'
 import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
+import Stripe from 'stripe';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_SANDBOX_KEY);
 
 export async function uploadListingImage(fileData) {
   const storageZoneName = process.env.BUNNY_STORAGE_ZONE_NAME
@@ -86,5 +89,16 @@ export async function createListing(request) {
       { error: 'Failed to create listing' },
       { status: 500 }
     );
+  }
+}
+
+export async function getCheckoutSessionLineItems(sessionId) {
+  try {
+    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
+    console.log('lineItems from actions', lineItems.data)
+    return { lineItems: lineItems.data };
+  } catch (error) {
+    console.error('Error retrieving line items:', error);
+    return { error: error.message };
   }
 }

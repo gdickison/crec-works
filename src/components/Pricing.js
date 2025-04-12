@@ -62,6 +62,7 @@ const tiers = [
       monthly: {
         amount: '$5',
         link: 'https://buy.stripe.com/9AQ8yW69maUa5Gw289'
+        // link: 'https://buy.stripe.com/test_00g4hL5uD8pScKI3cc'
       },
       annually: {
         amount: '$50',
