@@ -2,7 +2,7 @@
 import { useState } from 'react'
 import { RadioGroup } from '@headlessui/react'
 import { CheckIcon } from '@heroicons/react/20/solid'
-import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 const frequencies = [
   { value: 'monthly', label: 'Monthly', priceSuffix: '/month' },
@@ -12,41 +12,70 @@ const tiers = [
   {
     name: 'Congregational',
     id: 'tier-congregational',
-    href: '#',
-    price: { monthly: '$0', annually: '$0' },
+    price: {
+      monthly: {
+        amount: '$0',
+        link: '/create-listing/congregational'
+      },
+      annually: {
+        amount: '$0',
+        link: '/create-listing/congregational'
+      }
+    },
     description: 'Advertise to your local congregation.',
-    features: ['Your local church', 'Full business listing', 'Full keyword search'],
+    features: [
+      'Your local church',
+      'Full business listing',
+      'Full keyword search'
+    ],
     mostPopular: false,
     action: 'Get'
   },
   {
     name: 'Regional',
     id: 'tier-regional',
-    href: '#',
-    price: { monthly: '$2', annually: '$20' },
+    price: {
+      monthly: {
+        amount: '$2',
+        link: 'https://buy.stripe.com/8wM16u1T63rIb0Q5kn'
+      },
+      annually: {
+        amount: '$20',
+        link: 'https://buy.stripe.com/6oEbL8eFSe6m9WMeUW'
+      }
+    },
     description: 'Advertise to your physical service region.',
     features: [
-      'All churches in region',
+      'All CREC churches in region',
       'Full business listing',
       'Full keyword search',
       'Public search option',
-      'Search analytics'
+      'Search analytics (coming soon)'
     ],
-    mostPopular: true,
+    mostPopular: false,
     action: 'Buy'
   },
   {
     name: 'National',
     id: 'tier-national',
-    href: '#',
-    price: { monthly: '$5', annually: '$50' },
+    price: {
+      monthly: {
+        amount: '$5',
+        link: 'https://buy.stripe.com/9AQ8yW69maUa5Gw289'
+        // link: 'https://buy.stripe.com/test_00g4hL5uD8pScKI3cc'
+      },
+      annually: {
+        amount: '$50',
+        link: 'https://buy.stripe.com/14k7uSbtG3rI4Cs3cc'
+      }
+    },
     description: 'Perfect for remote businesses.',
     features: [
       'All CREC churches',
       'Full business listing',
       'Full keyword search',
       'Public search option',
-      'Search analytics'
+      'Search analytics (coming soon)'
     ],
     mostPopular: false,
     action: 'Buy'
@@ -59,6 +88,18 @@ function classNames(...classes) {
 
 export default function Pricing() {
   const [frequency, setFrequency] = useState(frequencies[0])
+  const router = useRouter()
+
+  const handlePlanSelect = (tier) => {
+    if (tier.id === 'tier-congregational') {
+      // Free plan - go directly to listing form
+      router.push(`/create-listing?plan=${tier.id}&frequency=${frequency.value}`)
+      return
+    }
+
+    // For paid plans, open the Stripe payment link in a new tab
+    window.open(tier.price[frequency.value].link, '_blank')
+  }
 
   return (
     <div className="bg-white py-12">
@@ -122,21 +163,20 @@ export default function Pricing() {
               </div>
               <p className="mt-4 text-sm leading-6 text-gray-600">{tier.description}</p>
               <p className="mt-6 flex items-baseline gap-x-1">
-                <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value]}</span>
+                <span className="text-4xl font-bold tracking-tight text-gray-900">{tier.price[frequency.value].amount}</span>
                 <span className="text-sm font-semibold leading-6 text-gray-600">{frequency.priceSuffix}</span>
               </p>
-              <Link
-                href={tier.href}
-                aria-describedby={tier.id}
+              <button
+                onClick={() => handlePlanSelect(tier)}
                 className={classNames(
                   tier.mostPopular
                     ? 'bg-indigo-600 text-white shadow-sm hover:bg-indigo-500'
                     : 'text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300',
-                  'mt-6 block rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
+                  'mt-6 block w-full rounded-md py-2 px-3 text-center text-sm font-semibold leading-6 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
                 )}
               >
                 {tier.action} plan
-              </Link>
+              </button>
               <ul role="list" className="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
                 {tier.features.map((feature) => (
                   <li key={feature} className="flex gap-x-3">
@@ -148,22 +188,23 @@ export default function Pricing() {
             </div>
           ))}
         </div>
-        <section id="relume" className="px-[5%] py-12">
-          <div className="container text-center">
+        <section id="relume" className="hidden lg:block px-[5%] py-12">
+          <div className="container text-center relative border-2 border-indigo-600/10">
+            <h1 className="absolute top-10 left-48 w-56 bg-indigo-600/10 -rotate-45 z-10 font-bold text-2xl text-indigo-600 rounded-md">Coming soon</h1>
             <h2 className="rb-5 mb-5 text-5xl font-semibold md:mb-6">
               For Churches
             </h2>
             <p className="md:text-xl">
               Get a branded directory for your congregation.
             </p>
-            <div className="mt-6 flex items-center justify-center gap-4 md:mt-8">
+            {/* <div className="mt-6 flex items-center justify-center gap-4 md:mt-8">
               <button
                 className="focus-visible:ring-border-primary inline-flex gap-3 items-center justify-center whitespace-nowrap ring-offset-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-border-primary text-text-primary bg-background-primary px-6 py-3 bg-indigo-600 text-white shadow-sm hover:bg-indigo-500 rounded-lg w-96"
                 title="Button"
               >
                 Get Started
               </button>
-            </div>
+            </div> */}
           </div>
         </section>
       </div>

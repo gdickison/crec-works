@@ -7,7 +7,6 @@ import Pricing from "@/components/Pricing";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 import { getData } from "./actions";
-
 export default async function Home() {
   const data = await getData();
 
@@ -40,7 +39,7 @@ export default async function Home() {
                 <p className="font-sans text-xl font-normal text-white flex flex-col sm:flex-row sm:gap-2 items-center justify-center"><span>List from $0 to $5.00/month. </span><span>Search for free.</span></p>
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-2">
                   <Link
-                    href="/create-listing"
+                    href="/pricing"
                     title=""
                     className="
                       inline-flex
@@ -99,8 +98,8 @@ export default async function Home() {
         <div>
           <Categories/>
         </div>
-      </SignedIn>
-      <Pricing/> */}
+      </SignedIn> */}
+      <Pricing/>
     </div>
   );
 }

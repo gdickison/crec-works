@@ -5,19 +5,21 @@ import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
 import { useUser } from "@clerk/nextjs";
-import { uploadListingImage, createListing } from './actions';
+import { uploadListingImage, createListing, getCheckoutSessionLineItems } from './actions';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
-export default function CreateListing() {
+export default function CreateListing({ params }) {
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [addressDetails, setAddressDetails] = useState(null);
   const selectId = 'service-categories';
   const { user, isLoaded } = useUser();
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [subscriptionProductId, setSubscriptionProductId] = useState('congregational');
 
   useEffect(() => {
     const waitForGoogle = () => {
@@ -44,6 +46,35 @@ export default function CreateListing() {
       }
     };
   }, []);
+
+  useEffect(() => {
+    const getLineItems = async () => {
+      const sessionId = params.id;
+      if (!sessionId || sessionId === 'congregational') return;
+
+      setIsLoading(true);
+      try {
+        const { lineItems, error } = await getCheckoutSessionLineItems(sessionId);
+        if (error) {
+          console.error('Error retrieving line items:', error);
+          return;
+        }
+
+        // Find the product ID from the line items
+        const productLineItem = lineItems.find(item => item.price?.product);
+
+        if (productLineItem) {
+          setSubscriptionProductId(productLineItem.price.product);
+        }
+      } catch (error) {
+        console.error('Error retrieving line items:', error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    getLineItems();
+  }, [params.id]);
 
   const handlePlaceChange = () => {
     const place = autocompleteRef.current.getPlace();
@@ -151,7 +182,8 @@ export default function CreateListing() {
         created_date: new Date().toISOString(),
         location: addressDetails,
         userId: user.id,
-        imageFile: imageFile
+        imageFile: imageFile,
+        subscription: subscriptionProductId
       };
 
       await createListing(formData);
@@ -182,6 +214,13 @@ export default function CreateListing() {
           <p className="text-sm text-gray-500 mb-6">Listings are for your personal services. You may list your own business, or your services within a larger organization. For example, if you are a financial advisor, you may list your services under your own business name, or under the name of the organization you work for.</p>
           <p className="text-sm text-gray-500 mb-6">Please fill out the form below to provide the information that will appear in your new business listing. All fields are required.</p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Hidden subscription field */}
+            <input
+              type="hidden"
+              {...register('subscription')}
+              value={subscriptionProductId}
+            />
+
             {/* Basic Information */}
             <div className="space-y-4">
               <div>
