@@ -46,7 +46,6 @@ export async function uploadListingImage(fileData) {
 }
 
 export async function createListing(request) {
-
   try {
     const sql = neon(process.env.DATABASE_URL);
     const result = await sql`
@@ -63,7 +62,8 @@ export async function createListing(request) {
         owner_name,
         owner_role,
         user_id,
-        website_url
+        website_url,
+        subscription
       ) VALUES (
         ${request.authority},
         ${request.business_email},
@@ -77,7 +77,8 @@ export async function createListing(request) {
         ${request.owner_name},
         ${request.owner_role},
         ${request.userId},
-        ${request.website_url}
+        ${request.website_url},
+        ${request.subscription}
       )
       RETURNING id;
     `;

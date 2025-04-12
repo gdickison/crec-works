@@ -19,6 +19,7 @@ export default function CreateListing({ params }) {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [subscriptionProductId, setSubscriptionProductId] = useState('congregational');
 
   useEffect(() => {
     const waitForGoogle = () => {
@@ -58,7 +59,13 @@ export default function CreateListing({ params }) {
           console.error('Error retrieving line items:', error);
           return;
         }
-        console.log('Line items:', lineItems);
+
+        // Find the product ID from the line items
+        const productLineItem = lineItems.find(item => item.price?.product);
+
+        if (productLineItem) {
+          setSubscriptionProductId(productLineItem.price.product);
+        }
       } catch (error) {
         console.error('Error retrieving line items:', error);
       } finally {
@@ -175,7 +182,8 @@ export default function CreateListing({ params }) {
         created_date: new Date().toISOString(),
         location: addressDetails,
         userId: user.id,
-        imageFile: imageFile
+        imageFile: imageFile,
+        subscription: subscriptionProductId
       };
 
       await createListing(formData);
@@ -206,6 +214,13 @@ export default function CreateListing({ params }) {
           <p className="text-sm text-gray-500 mb-6">Listings are for your personal services. You may list your own business, or your services within a larger organization. For example, if you are a financial advisor, you may list your services under your own business name, or under the name of the organization you work for.</p>
           <p className="text-sm text-gray-500 mb-6">Please fill out the form below to provide the information that will appear in your new business listing. All fields are required.</p>
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+            {/* Hidden subscription field */}
+            <input
+              type="hidden"
+              {...register('subscription')}
+              value={subscriptionProductId}
+            />
+
             {/* Basic Information */}
             <div className="space-y-4">
               <div>
