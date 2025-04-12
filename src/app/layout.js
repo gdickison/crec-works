@@ -5,6 +5,7 @@ import {
 import "./globals.css";
 import Header from "@/components/Header";
 import Script from 'next/script'
+import { Analytics } from '@vercel/analytics/next'
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,6 +27,7 @@ export default function RootLayout({ children }) {
         <body className={`${inter.className} relative`}>
           <Header />
           {children}
+          <Analytics />
         </body>
       </html>
     </ClerkProvider>
