@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-
+import UserListings from "@/components/UserListings";
 const StorefrontIcon = () => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960" fill="#6b7280">
@@ -14,6 +14,7 @@ const StorefrontIcon = () => {
 
 export default function Header() {
   const { user } = useUser();
+  console.log(user);
   const pathname = usePathname();
 
   // Hide navigation links on sign-in page
@@ -57,10 +58,9 @@ export default function Header() {
               <SignedIn>
                 <UserButton>
                   <UserButton.UserProfilePage label="My Listings" url="custom" labelIcon={<StorefrontIcon />} >
-                    <div className="h-full w-full flex flex-col items-center justify-center">
-                      <h1>My Listings</h1>
-                      <p>This is a custom page</p>
-                    </div>
+                    <UserListings
+                      user={user}
+                    />
                   </UserButton.UserProfilePage>
                 </UserButton>
               </SignedIn>
