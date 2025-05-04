@@ -8,7 +8,7 @@ export default function UserListings({user}) {
 
   useEffect(() => {
     const fetchListings = async () => {
-      const listings = await getUserListings('user_2tm13qfEsSNAkhxDuIqaZunvU8b');
+      const listings = await getUserListings(user.id);
       setListings(listings);
     };
     fetchListings();
@@ -19,7 +19,12 @@ export default function UserListings({user}) {
   return (
     <div className="h-full w-full flex flex-col items-center justify-center">
       <h1>My Listings</h1>
-      <p>This is a custom page</p>
+      {listings.length === 0 && (
+        <p>You have no listings</p>
+      )}
+      {listings.length > 0 && (
+        <p>{`You have ${listings.length} listing${listings.length === 1 ? '' : 's'}`}</p>
+      )}
     </div>
   )
 }
