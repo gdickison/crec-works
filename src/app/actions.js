@@ -252,3 +252,23 @@ export async function getListingsByCategory(tag) {
     throw new Error('Failed to fetch listings');
   }
 }
+
+export async function getUserListings(userId) {
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+    const result = await sql`
+      SELECT
+        id,
+        business_name,
+        image_file
+      FROM listings
+      WHERE user_id = ${userId}
+    `;
+
+    return result;
+
+  } catch (error) {
+    console.error('Database error:', error);
+    throw new Error('Failed to fetch user listings');
+  }
+}
