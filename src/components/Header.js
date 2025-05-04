@@ -57,7 +57,7 @@ export default function Header({children}) {
               <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
                 <SignedIn>
                   <UserButton>
-                    <UserButton.UserProfileLink label="My Listings" url="/user-listings" labelIcon={<StorefrontIcon />} />
+                    <UserButton.UserProfileLink label="My Listings" url="/user-dashboard" labelIcon={<StorefrontIcon />} />
                   </UserButton>
                 </SignedIn>
                 <SignedOut>

@@ -4,13 +4,13 @@ import { getUserListings } from "@/app/actions";
 import { auth } from "@clerk/nextjs/server";
 
 export default async function UserListings() {
-  const { userId } = auth();
+  const { userId } = await auth();
   const listings = await getUserListings(userId);
   // const listings = await getUserListings('user_2tm13qfEsSNAkhxDuIqaZunvU8b');
   console.log('listings',listings);
 
   return (
-    <div className="w-full flex flex-col items-start justify-center max-w-7xl mx-auto py-20">
+    <div className="w-full flex flex-col items-start justify-center max-w-5xl mx-auto py-20">
       <h1 className="text-2xl font-bold">My Listings</h1>
       {listings.length === 0 ? (
         <p className="text-gray-500 my-4">You have no listings</p>
