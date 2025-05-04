@@ -272,3 +272,32 @@ export async function getUserListings(userId) {
     throw new Error('Failed to fetch user listings');
   }
 }
+
+export async function getSingleListing(id) {
+  try {
+    const sql = neon(process.env.DATABASE_URL);
+
+    const result = await sql`
+      SELECT
+        id,
+        business_email,
+        business_name,
+        business_phone,
+        categories,
+        description,
+        image_file,
+        location,
+        owner_name,
+        owner_role,
+        website_url
+      FROM listings
+      WHERE id = ${id}
+    `;
+
+    return result;
+
+  } catch (error) {
+    console.error('Database error:', error);
+    throw new Error('Failed to fetch listings');
+  }
+}

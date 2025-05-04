@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { SignedIn, SignedOut, UserButton, useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-import UserListings from "@/components/UserListings";
 
 const StorefrontIcon = () => {
   return (
@@ -15,7 +14,6 @@ const StorefrontIcon = () => {
 
 export default function Header({children}) {
   const { user } = useUser();
-  console.log(user);
   const pathname = usePathname();
 
   // Hide navigation links on sign-in page
@@ -59,11 +57,7 @@ export default function Header({children}) {
               <div className="mt-6 flex flex-col items-center gap-4 lg:ml-4 lg:mt-0 lg:flex-row">
                 <SignedIn>
                   <UserButton>
-                    <UserButton.UserProfilePage label="My Listings" url="custom" labelIcon={<StorefrontIcon />} >
-                      <UserListings
-                        user={user}
-                      />
-                    </UserButton.UserProfilePage>
+                    <UserButton.UserProfileLink label="My Listings" url="/user-listings" labelIcon={<StorefrontIcon />} />
                   </UserButton>
                 </SignedIn>
                 <SignedOut>
