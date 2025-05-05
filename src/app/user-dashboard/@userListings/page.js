@@ -5,8 +5,8 @@ import { auth } from "@clerk/nextjs/server";
 
 export default async function UserListings() {
   const { userId } = await auth();
-  const listings = await getUserListings(userId);
-  // const listings = await getUserListings('user_2tm13qfEsSNAkhxDuIqaZunvU8b');
+  // const listings = await getUserListings(userId);
+  const listings = await getUserListings('user_2tm13qfEsSNAkhxDuIqaZunvU8b');
   console.log('listings',listings);
 
   return (
@@ -17,7 +17,7 @@ export default async function UserListings() {
       ) : (
         <ul role="list" className="w-full">
           {listings.map((listing) => (
-            <Link href={`/listing/${listing.id}`} key={listing.id}>
+            <Link href={`/edit-listing/${listing.id}`} key={listing.id}>
               <li className="my-4 hover:scale-105 transition-all duration-300">
                 <div className="flex items-center gap-12 w-full h-24 bg-white rounded-lg shadow-md p-4">
                   <img

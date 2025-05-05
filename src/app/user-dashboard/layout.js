@@ -2,7 +2,7 @@ export default function UserDashboardLayout({children, userAccount, userListings
   return (
     <div className="pt-20">
       {children}
-      <div className="flex gap-4 mx-4">
+      <div className="flex gap-4 lg:px-[5%]">
         <div className="w-1/3 border-2 border-gray-200 rounded-lg shadow-md h-fit">
           {userAccount}
         </div>

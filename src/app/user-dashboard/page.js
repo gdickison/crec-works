@@ -6,7 +6,7 @@ export default async function UserDashboard() {
   const user = await client.users.getUser(userId);
 
   return (
-    <div className="mx-4">
+    <div className="lg:px-[5%]">
       <h1 className="text-2xl font-bold my-4">{`User Dashboard for ${user.firstName} ${user.lastName}`}</h1>
     </div>
   )
