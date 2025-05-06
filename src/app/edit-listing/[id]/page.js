@@ -193,7 +193,8 @@ export default function EditListing(props) {
     return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
   };
 
-  const onSubmit = async (data) => {
+  const submitListingUpdate = async (data) => {
+    console.log('data',data);
     try {
       // Handle avatar upload first if there is one
       let imageFile = listing?.image_file || null;
@@ -247,7 +248,7 @@ export default function EditListing(props) {
           <h1 className="text-2xl font-bold mb-6">Edit Business Listing</h1>
           <p className="text-sm text-gray-500 mb-6">Listings are for your personal services. You may list your own business, or your services within a larger organization. For example, if you are a financial advisor, you may list your services under your own business name, or under the name of the organization you work for.</p>
           <p className="text-sm text-gray-500 mb-6">Please fill out the form below to provide the information that will appear in your new business listing. All fields are required.</p>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <form onSubmit={handleSubmit(submitListingUpdate)} className="space-y-6">
             {/* Hidden subscription field */}
             <input
               type="hidden"
@@ -262,7 +263,6 @@ export default function EditListing(props) {
                 <input
                   {...register('business_name', { required: 'Title is required' })}
                   className={inputClassName}
-                  value={listing?.business_name}
                 />
                 {errors.business_name && (
                   <p className="text-red-500 text-sm mt-1">{errors.business_name.message}</p>
@@ -313,7 +313,6 @@ export default function EditListing(props) {
                   })}
                   className={inputClassName}
                   placeholder="https://example.com"
-                  value={listing?.website_url}
                 />
                 {errors.website_url && (
                   <p className="text-red-500 text-sm mt-1">{errors.website_url.message}</p>
@@ -327,7 +326,6 @@ export default function EditListing(props) {
                   className={inputClassName}
                   rows={4}
                   placeholder="Only the first 250 characters will be shown on the listing. The full description will be shown on the listing page."
-                  value={listing?.description}
                 />
                 <div className="flex justify-between text-sm text-gray-500 mt-1">
                   <span>{watch('description')?.length || 0} characters</span>
@@ -422,7 +420,6 @@ export default function EditListing(props) {
                 <input
                   {...register('owner_name', { required: 'Owner name is required' })}
                   className={inputClassName}
-                  value={listing?.owner_name}
                 />
                 {errors.owner_name && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner_name.message}</p>
@@ -438,7 +435,6 @@ export default function EditListing(props) {
                   {...register('owner_role', { required: 'Owner role is required' })}
                   className={inputClassName}
                   placeholder="e.g. Owner, Founder, CEO, Senior Advisor, etc."
-                  value={listing?.owner_role}
                 />
                 {errors.owner_role && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner_role.message}</p>
@@ -456,7 +452,6 @@ export default function EditListing(props) {
                   })}
                   type="email"
                   className={inputClassName}
-                  value={listing?.business_email}
                 />
                 {errors.business_email && (
                   <p className="text-red-500 text-sm mt-1">{errors.business_email.message}</p>
@@ -477,7 +472,6 @@ export default function EditListing(props) {
                   }}
                   render={({ field: { onChange, value } }) => (
                     <input
-                      value={listing?.business_phone}
                       onChange={(e) => {
                         const formatted = formatPhoneNumber(e.target.value);
                         onChange(formatted);
