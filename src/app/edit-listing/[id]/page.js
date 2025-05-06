@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 'use client';
 
 import { use, useEffect, useRef, useState } from 'react';
@@ -12,7 +13,7 @@ import { getSingleListing } from '@/app/actions';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
-export default function CreateListing(props) {
+export default function EditListing(props) {
   const params = use(props.params);
   const id = params.id;
   console.log('id',id);
@@ -57,7 +58,7 @@ export default function CreateListing(props) {
   useEffect(() => {
     const getListing = async () => {
       const listing = await getSingleListing(id);
-      setListing(listing);
+      setListing(listing[0]);
     }
     getListing();
   }, [id]);
@@ -151,16 +152,36 @@ export default function CreateListing(props) {
     formState: { errors },
     watch,
     reset
-  } = useForm({
-    defaultValues: {
-      categories: [],
-      owner_name: isLoaded ? `${user?.fullName}` : '',
-      owner_role: '',
-      business_email: isLoaded ? `${user?.primaryEmailAddress.emailAddress}` : '',
-      business_phone: '',
-      authority: false
+  } = useForm();
+
+  console.log('categories',listing?.categories);
+
+  // Set address details when listing is loaded
+  useEffect(() => {
+    if (listing?.location) {
+      setAddressDetails(listing.location);
+      if (inputRef.current) {
+        inputRef.current.value = listing.location.fullAddress;
+      }
     }
-  });
+  }, [listing]);
+
+  // Update form values when listing is loaded
+  useEffect(() => {
+    if (listing) {
+      reset({
+        business_name: listing.business_name,
+        business_email: listing.business_email,
+        business_phone: listing.business_phone,
+        description: listing.description,
+        owner_name: listing.owner_name,
+        owner_role: listing.owner_role,
+        website_url: listing.website_url,
+        categories: listing.categories,
+        authority: true
+      });
+    }
+  }, [listing, reset]);
 
   const formatPhoneNumber = (value) => {
     if (!value) return value;
@@ -173,45 +194,43 @@ export default function CreateListing(props) {
   };
 
   const onSubmit = async (data) => {
-
     try {
       // Handle avatar upload first if there is one
-      let imageFile = data.imageFile || null
+      let imageFile = listing?.image_file || null;
       if (data.imageFile && data.imageFile instanceof FileList && data.imageFile.length > 0) {
-        const file = data.imageFile[0]
+        const file = data.imageFile[0];
         // Convert File to ArrayBuffer, then to Base64
-        const buffer = await file.arrayBuffer()
-        const base64 = Buffer.from(buffer).toString('base64')
+        const buffer = await file.arrayBuffer();
+        const base64 = Buffer.from(buffer).toString('base64');
 
         // Create a serializable object with the file data
         const fileData = {
           name: file.name,
           type: file.type,
           base64: base64
-        }
-        imageFile = await uploadListingImage(fileData)
+        };
+        imageFile = await uploadListingImage(fileData);
       }
 
       const formData = {
         ...data,
-        created_date: new Date().toISOString(),
+        id: listing.id, // Include the listing ID for update
         location: addressDetails,
         userId: user.id,
         imageFile: imageFile,
         subscription: subscriptionProductId
       };
 
-      await createListing(formData);
-      document.getElementById('listing_submission_success').showModal()
-      reset() // Reset the form fields
+      await createListing(formData); // You'll need to update this to handle updates
+      document.getElementById('listing_submission_success').showModal();
       // Add a slight delay to show the success modal before redirecting
       setTimeout(() => {
         document.getElementById('listing_submission_success').close();
         router.push('/'); // Redirect to home page
-      }, 2000); // 2 second delay
+      }, 2000);
     } catch (error) {
-      console.error('Error creating listing:', error);
-      document.getElementById('listing_submission_error').showModal()
+      console.error('Error updating listing:', error);
+      document.getElementById('listing_submission_error').showModal();
     }
   };
 
@@ -243,6 +262,7 @@ export default function CreateListing(props) {
                 <input
                   {...register('business_name', { required: 'Title is required' })}
                   className={inputClassName}
+                  value={listing?.business_name}
                 />
                 {errors.business_name && (
                   <p className="text-red-500 text-sm mt-1">{errors.business_name.message}</p>
@@ -293,6 +313,7 @@ export default function CreateListing(props) {
                   })}
                   className={inputClassName}
                   placeholder="https://example.com"
+                  value={listing?.website_url}
                 />
                 {errors.website_url && (
                   <p className="text-red-500 text-sm mt-1">{errors.website_url.message}</p>
@@ -306,6 +327,7 @@ export default function CreateListing(props) {
                   className={inputClassName}
                   rows={4}
                   placeholder="Only the first 250 characters will be shown on the listing. The full description will be shown on the listing page."
+                  value={listing?.description}
                 />
                 <div className="flex justify-between text-sm text-gray-500 mt-1">
                   <span>{watch('description')?.length || 0} characters</span>
@@ -318,11 +340,22 @@ export default function CreateListing(props) {
 
               <div>
                 <label className="block text-md font-medium mb-1">Business Logo or Image</label>
+                {listing?.image_file && (
+                  <div className="mb-4">
+                    <p className="text-sm text-gray-600 mb-2">Current image: {listing.image_file}</p>
+                    <img
+                      src={`https://my-church-works-images.b-cdn.net/${listing.image_file}`}
+                      alt="Current business logo"
+                      className="h-32 w-32 object-contain rounded-md border border-gray-200"
+                    />
+                  </div>
+                )}
                 <input
                   type="file"
                   accept=".jpg,.jpeg,.png,.webp,.svg"
-                  {...register('imageFile', {
-                    required: 'Image is required',
+                  file="Choose new file"
+                  {...register('image_file', {
+                    required: !listing?.image_file ? 'Image is required' : false,
                     validate: {
                       lessThan1MB: (files) =>
                         !files[0] || files[0].size <= 1000000 || 'Image must be less than 1MB',
@@ -339,8 +372,8 @@ export default function CreateListing(props) {
                     file:bg-blue-50 file:text-blue-700
                     hover:file:bg-blue-100`}
                 />
-                {errors.imageFile && (
-                  <p className="text-red-500 text-sm mt-1">{errors.imageFile.message}</p>
+                {errors.image_file && (
+                  <p className="text-red-500 text-sm mt-1">{errors.image_file.message}</p>
                 )}
                 <p className="text-gray-500 text-sm mt-1">
                   Maximum file size: 1MB. Accepted formats: JPG, JPEG, PNG, WEBP, SVG
@@ -389,6 +422,7 @@ export default function CreateListing(props) {
                 <input
                   {...register('owner_name', { required: 'Owner name is required' })}
                   className={inputClassName}
+                  value={listing?.owner_name}
                 />
                 {errors.owner_name && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner_name.message}</p>
@@ -404,6 +438,7 @@ export default function CreateListing(props) {
                   {...register('owner_role', { required: 'Owner role is required' })}
                   className={inputClassName}
                   placeholder="e.g. Owner, Founder, CEO, Senior Advisor, etc."
+                  value={listing?.owner_role}
                 />
                 {errors.owner_role && (
                   <p className="text-red-500 text-sm mt-1">{errors.owner_role.message}</p>
@@ -421,6 +456,7 @@ export default function CreateListing(props) {
                   })}
                   type="email"
                   className={inputClassName}
+                  value={listing?.business_email}
                 />
                 {errors.business_email && (
                   <p className="text-red-500 text-sm mt-1">{errors.business_email.message}</p>
@@ -441,7 +477,7 @@ export default function CreateListing(props) {
                   }}
                   render={({ field: { onChange, value } }) => (
                     <input
-                      value={value}
+                      value={listing?.business_phone}
                       onChange={(e) => {
                         const formatted = formatPhoneNumber(e.target.value);
                         onChange(formatted);
@@ -459,7 +495,7 @@ export default function CreateListing(props) {
                 <input
                   type="checkbox"
                   id="authority"
-                  defaultChecked={false}
+                  defaultChecked={true}
                   {...register('authority', {
                     required: 'You must confirm you have authority to post this listing'
                   })}
@@ -477,7 +513,7 @@ export default function CreateListing(props) {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
             >
-              Create Listing
+              Update Listing
             </button>
             <dialog id='listing_submission_success' className="fixed inset-0 z-10 w-screen h-screen overflow-y-auto">
               <div className="relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
