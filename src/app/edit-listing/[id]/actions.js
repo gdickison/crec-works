@@ -1,9 +1,6 @@
 'use server'
 import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
-import Stripe from 'stripe';
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 export async function uploadListingImage(fileData) {
   const storageZoneName = process.env.BUNNY_STORAGE_ZONE_NAME
@@ -45,41 +42,25 @@ export async function uploadListingImage(fileData) {
   }
 }
 
-export async function createListing(request) {
+export async function updateListing(request) {
   try {
     const sql = neon(process.env.DATABASE_URL);
     const result = await sql`
-      INSERT INTO listings (
-        authority,
-        business_email,
-        business_name,
-        business_phone,
-        categories,
-        created_date,
-        description,
-        image_file,
-        location,
-        owner_name,
-        owner_role,
-        user_id,
-        website_url,
-        subscription
-      ) VALUES (
-        ${request.authority},
-        ${request.business_email},
-        ${request.business_name},
-        ${request.business_phone},
-        ${JSON.stringify(request.categories)},
-        ${request.created_date},
-        ${request.description},
-        ${request.imageFile},
-        ${JSON.stringify(request.location)},
-        ${request.owner_name},
-        ${request.owner_role},
-        ${request.userId},
-        ${request.website_url},
-        ${request.subscription}
-      )
+      UPDATE listings
+      SET
+        authority = ${request.authority},
+        business_email = ${request.business_email},
+        business_name = ${request.business_name},
+        business_phone = ${request.business_phone},
+        categories = ${JSON.stringify(request.categories)},
+        description = ${request.description},
+        image_file = ${request.imageFile},
+        location = ${JSON.stringify(request.location)},
+        owner_name = ${request.owner_name},
+        owner_role = ${request.owner_role},
+        website_url = ${request.website_url},
+        subscription = ${request.subscription}
+      WHERE id = ${request.id}
       RETURNING id;
     `;
 
@@ -87,19 +68,8 @@ export async function createListing(request) {
   } catch (error) {
     console.error('Database error:', error);
     return NextResponse.json(
-      { error: 'Failed to create listing' },
+      { error: 'Failed to update listing' },
       { status: 500 }
     );
-  }
-}
-
-export async function getCheckoutSessionLineItems(sessionId) {
-  try {
-    const lineItems = await stripe.checkout.sessions.listLineItems(sessionId);
-    console.log('lineItems from actions', lineItems.data)
-    return { lineItems: lineItems.data };
-  } catch (error) {
-    console.error('Error retrieving line items:', error);
-    return { error: error.message };
   }
 }

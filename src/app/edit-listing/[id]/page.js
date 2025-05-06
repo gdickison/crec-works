@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
 import { useUser } from "@clerk/nextjs";
-import { uploadListingImage, createListing, getCheckoutSessionLineItems } from './actions';
+import { uploadListingImage, updateListing } from './actions';
 import Loader from '@/components/Loader';
 import { useRouter } from 'next/navigation';
 import { getSingleListing } from '@/app/actions';
@@ -16,9 +16,7 @@ const Select = dynamic(() => import("react-select"), { ssr: false });
 export default function EditListing(props) {
   const params = use(props.params);
   const id = params.id;
-  console.log('id',id);
   const [listing, setListing] = useState(null);
-  console.log('listing',listing);
 
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
@@ -26,7 +24,6 @@ export default function EditListing(props) {
   const selectId = 'service-categories';
   const { user, isLoaded } = useUser();
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
   const [subscriptionProductId, setSubscriptionProductId] = useState('congregational');
 
   useEffect(() => {
@@ -62,35 +59,6 @@ export default function EditListing(props) {
     }
     getListing();
   }, [id]);
-
-  // useEffect(() => {
-  //   const getLineItems = async () => {
-  //     const sessionId = params.id;
-  //     if (!sessionId || sessionId === 'congregational') return;
-
-  //     setIsLoading(true);
-  //     try {
-  //       const { lineItems, error } = await getCheckoutSessionLineItems(sessionId);
-  //       if (error) {
-  //         console.error('Error retrieving line items:', error);
-  //         return;
-  //       }
-
-  //       // Find the product ID from the line items
-  //       const productLineItem = lineItems.find(item => item.price?.product);
-
-  //       if (productLineItem) {
-  //         setSubscriptionProductId(productLineItem.price.product);
-  //       }
-  //     } catch (error) {
-  //       console.error('Error retrieving line items:', error);
-  //     } finally {
-  //       setIsLoading(false);
-  //     }
-  //   };
-
-  //   getLineItems();
-  // }, [params.id]);
 
   const handlePlaceChange = () => {
     const place = autocompleteRef.current.getPlace();
@@ -154,8 +122,6 @@ export default function EditListing(props) {
     reset
   } = useForm();
 
-  console.log('categories',listing?.categories);
-
   // Set address details when listing is loaded
   useEffect(() => {
     if (listing?.location) {
@@ -194,7 +160,6 @@ export default function EditListing(props) {
   };
 
   const submitListingUpdate = async (data) => {
-    console.log('data',data);
     try {
       // Handle avatar upload first if there is one
       let imageFile = listing?.image_file || null;
@@ -215,19 +180,19 @@ export default function EditListing(props) {
 
       const formData = {
         ...data,
-        id: listing.id, // Include the listing ID for update
+        id: listing.id,
         location: addressDetails,
         userId: user.id,
         imageFile: imageFile,
         subscription: subscriptionProductId
       };
 
-      await createListing(formData); // You'll need to update this to handle updates
+      await updateListing(formData);
       document.getElementById('listing_submission_success').showModal();
       // Add a slight delay to show the success modal before redirecting
       setTimeout(() => {
         document.getElementById('listing_submission_success').close();
-        router.push('/'); // Redirect to home page
+        router.push('/user-dashboard'); // Redirect to dashboard instead of home
       }, 2000);
     } catch (error) {
       console.error('Error updating listing:', error);
@@ -463,6 +428,7 @@ export default function EditListing(props) {
                 <Controller
                   name="business_phone"
                   control={control}
+                  defaultValue=""
                   rules={{
                     required: 'Phone number is required',
                     pattern: {
@@ -470,8 +436,9 @@ export default function EditListing(props) {
                       message: 'Invalid phone number format'
                     }
                   }}
-                  render={({ field: { onChange, value } }) => (
+                  render={({ field: { onChange, value = '' } }) => (
                     <input
+                      value={value}
                       onChange={(e) => {
                         const formatted = formatPhoneNumber(e.target.value);
                         onChange(formatted);
