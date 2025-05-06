@@ -7,7 +7,7 @@ export default async function UserAccount() {
 
   return (
     <div className="w-full flex flex-col items-start justify-center max-w-lg mx-auto py-20 px-4">
-      <h1 className="text-2xl font-bold">My Account</h1>
+      <h1 className="text-2xl font-bold mb-4">My Account</h1>
       <div className="bg-gray-100 p-4 rounded-lg">
         <ul>
           <li>
@@ -20,7 +20,7 @@ export default async function UserAccount() {
             <span>Church: </span><span>{user.publicMetadata.church}</span>
           </li>
         </ul>
-        <p>Subscription details</p>
+        {/* <p>Subscription details</p> */}
       </div>
     </div>
   )
