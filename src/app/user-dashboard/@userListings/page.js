@@ -5,8 +5,7 @@ import { auth } from "@clerk/nextjs/server";
 
 export default async function UserListings() {
   const { userId } = await auth();
-  // const listings = await getUserListings(userId);
-  const listings = await getUserListings('user_2tm13qfEsSNAkhxDuIqaZunvU8b');
+  const listings = await getUserListings(userId);
 
   return (
     <div className="w-full flex flex-col items-start justify-center max-w-5xl mx-auto py-20 px-4">
