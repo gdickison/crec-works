@@ -3,6 +3,7 @@ import { neon } from "@neondatabase/serverless";
 import { NextResponse } from "next/server";
 
 export async function uploadListingImage(fileData) {
+
   const storageZoneName = process.env.BUNNY_STORAGE_ZONE_NAME
   const apiKey = process.env.BUNNY_STORAGE_API_KEY
   const region = process.env.BUNNY_STORAGE_REGION
