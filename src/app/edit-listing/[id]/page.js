@@ -160,11 +160,12 @@ export default function EditListing(props) {
   };
 
   const submitListingUpdate = async (data) => {
+
     try {
       // Handle avatar upload first if there is one
-      let imageFile = listing?.image_file || null;
-      if (data.imageFile && data.imageFile instanceof FileList && data.imageFile.length > 0) {
-        const file = data.imageFile[0];
+      let imageFile = data?.image_file || null;
+      if (data.image_file && data.image_file instanceof FileList && data.image_file.length > 0) {
+        const file = data.image_file[0];
         // Convert File to ArrayBuffer, then to Base64
         const buffer = await file.arrayBuffer();
         const base64 = Buffer.from(buffer).toString('base64');
