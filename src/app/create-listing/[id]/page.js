@@ -339,14 +339,14 @@ export default function CreateListing(props) {
               <div>
                 <label className="block text-md font-medium mb-2">Service Categories:</label>
                 <p className="text-gray-500 text-sm mb-1">
-                  Select one or more categories that best describe your business.
+                  Select 1-3 categories that best describe your business.
                 </p>
                 <Controller
                   name="categories"
                   control={control}
                   rules={{
                     required: 'Select at least one category',
-                    validate: value => !value || value.length <= 3 || 'Maximum 3 categories allowed'
+                    validate: value => (value && value.length > 0 && value.length <= 3) || 'Please select at least 1 and no more than 3 categories'
                   }}
                   render={({ field: { onChange, value } }) => (
                     <Select
@@ -367,6 +367,9 @@ export default function CreateListing(props) {
                     />
                   )}
                 />
+                {errors.categories && (
+                  <p className="text-red-500 text-sm mt-1">{errors.categories.message}</p>
+                )}
               </div>
             </div>
 
