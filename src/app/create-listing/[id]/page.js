@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { use, useEffect, useRef, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import dynamic from 'next/dynamic';
 import { categoryOptions } from '@/utils/listingOptions';
@@ -11,7 +11,8 @@ import { useRouter } from 'next/navigation';
 
 const Select = dynamic(() => import("react-select"), { ssr: false });
 
-export default function CreateListing({ params }) {
+export default function CreateListing(props) {
+  const params = use(props.params)
   const inputRef = useRef(null);
   const autocompleteRef = useRef(null);
   const [addressDetails, setAddressDetails] = useState(null);
@@ -50,7 +51,10 @@ export default function CreateListing({ params }) {
   useEffect(() => {
     const getLineItems = async () => {
       const sessionId = params.id;
-      if (!sessionId || sessionId === 'congregational') return;
+      if (!sessionId || sessionId === 'tier-congregational') {
+        setSubscriptionProductId('congregational');
+        return;
+      }
 
       setIsLoading(true);
       try {

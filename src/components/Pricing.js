@@ -93,7 +93,7 @@ export default function Pricing() {
   const handlePlanSelect = (tier) => {
     if (tier.id === 'tier-congregational') {
       // Free plan - go directly to listing form
-      router.push(`/create-listing?plan=${tier.id}&frequency=${frequency.value}`)
+      router.push(`/create-listing/${tier.id}`)
       return
     }
 
