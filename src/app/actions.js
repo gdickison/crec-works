@@ -27,6 +27,7 @@ export async function getListings() {
         owner_role,
         website_url
       FROM listings
+      WHERE active = true
       ORDER BY business_name ASC;
     `;
 
