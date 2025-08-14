@@ -86,7 +86,7 @@ export default function Header({children}) {
           {showNav && (
             <div
               className={`overflow-hidden px-[5%] lg:flex lg:items-center lg:px-0 lg:[--height-closed:auto] lg:[--height-open:auto] transition-all duration-300 ease-in-out ${
-                isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'
+                isMobileMenuOpen ? 'max-h-96 opacity-100 bg-white' : 'max-h-0 opacity-0 lg:max-h-none lg:opacity-100'
               }`}
               style={{height: isMobileMenuOpen ? "auto" : "var(--height-closed, 0)"}}
             >
