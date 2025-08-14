@@ -44,7 +44,7 @@ export default function Header({children}) {
   }, [pathname]);
 
   return (
-    <div className={`absolute top-0 left-0 w-full z-10 ${showBackground ? 'bg-gray-600/50' : ''}`}>
+    <div className={`absolute top-0 left-0 w-full z-20 ${showBackground ? 'bg-gray-600/50' : ''}`}>
       <nav
         className={`flex w-full items-center ${showBackground ? 'border-b border-border-primary' : ''} bg-background-primary lg:min-h-18 lg:px-[5%] py-2`}
       >
