@@ -116,7 +116,9 @@ export default function Header({children}) {
                   <p className="py-2 text-md lg:px-4 lg:py-2 lg:text-xl">Welcome, {user?.firstName}</p>
                 </div>
               </SignedIn>
-              <div className="mt-4 lg:mt-0 flex flex-col items-start lg:items-center gap-4 lg:ml-4 lg:flex-row pb-4 lg:pb-0">
+              <div className="mt-4 lg:mt-0 flex flex-col gap-4 lg:ml-4 lg:flex-row pb-4 lg:pb-0"
+                style={{alignItems: isMobileMenuOpen ? 'center' : 'flex-start'}}
+              >
                 <SignedIn>
                   <UserButton>
                     <UserButton.UserProfileLink label="My Dashboard" url="/user-dashboard" labelIcon={<StorefrontIcon />} />
@@ -141,7 +143,6 @@ export default function Header({children}) {
                       border-2
                       rounded-full
                       sm:leading-8
-                      text-white
                       border-primary
                       hover:bg-white
                       focus:outline-none
@@ -149,6 +150,7 @@ export default function Header({children}) {
                       sm:text-lg
                       focus:ring-offset-secondary
                     "
+                    style={{color: isMobileMenuOpen ? 'black' : 'white'}}
                     role="button"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
