@@ -58,17 +58,21 @@ export default function CreateListing(props) {
 
       setIsLoading(true);
       try {
-        const { lineItems, error } = await getCheckoutSessionLineItems(sessionId);
-        if (error) {
-          console.error('Error retrieving line items:', error);
-          return;
-        }
+        // const { lineItems, error } = await getCheckoutSessionLineItems(sessionId);
+        const { lineItems } = await getCheckoutSessionLineItems(sessionId);
+        // if (error) {
+        //   console.error('Error retrieving line items:', error);
+        //   return;
+        // }
 
         // Find the product ID from the line items
-        const productLineItem = lineItems.find(item => item.price?.product);
+        const productLineItem = lineItems?.find(item => item.price?.product);
+        console.log('productLineItem:', productLineItem);
 
         if (productLineItem) {
           setSubscriptionProductId(productLineItem.price.product);
+        } else {
+          setSubscriptionProductId('congregational'); // Default if not found
         }
       } catch (error) {
         console.error('Error retrieving line items:', error);
