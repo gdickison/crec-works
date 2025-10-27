@@ -6,12 +6,17 @@ import { auth } from "@clerk/nextjs/server";
 export default async function UserListings() {
   const { userId } = await auth();
   const listings = await getUserListings(userId);
-
+  // const listings = await getUserListings("user_2tm13qfEsSNAkhxDuIqaZunvU8b");
+  console.log('userId:', userId);
+  console.log('listings:', listings);
   return (
     <div className="w-full flex flex-col items-start justify-center max-w-5xl mx-auto py-20 px-4">
       <h1 className="text-2xl font-bold">My Listings</h1>
       {listings.length === 0 ? (
-        <p className="text-gray-500 my-4">You have no listings</p>
+        <div className="flex flex-col items-start">
+          <p className="text-gray-500 my-4">You have no listings</p>
+          <Link href={`/create-listing/${userId}`} className="text-blue-500 hover:underline">Create a Listing</Link>
+        </div>
       ) : (
         <ul role="list" className="w-full">
           {listings.map((listing) => (
